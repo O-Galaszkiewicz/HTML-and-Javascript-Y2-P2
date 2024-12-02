@@ -1,7 +1,7 @@
 // Imports
-import express, { query } from 'express';
-import bodyParser from 'body-parser';
-import expressSession from 'express-session';
+import express from './express';
+import bodyParser from './body-parser';
+import expressSession from './express-session';
 import { MongoClient, ServerApiVersion, ObjectId } from 'mongodb';
 
 const app = express();
@@ -39,51 +39,34 @@ app.use(expressSession({
 
 app.use(express.static("./frontend"));
 
-/* Demo Code
-
-// JSON Text on screen
-app.get(studentID + home, (req, res) => {
-    res.send({"Hello": true});
-    })
-
-    // Store data into an array
-    app.post(studentID + home, (req, res) => {
-    console.log(req.path);
-    console.log(req.body);
-    usersArray.push(req.body);
-    res.send(usersArray);
-})
-*/
-
-// Main Code
-
 // Registration
-app.post(studentID + register, (req, res) => {
+
+app.post(studentID + register, async (req, res) => {
     /* Client sends user registration data in JSON format to web service with a POST request.
        User data is stored in MongoDB. Web service replies with the result of the operation
        in JSON format.
        */
-    const data = req.body;
-    console.log(data);
-    res.send({ message: true });
+    const { username, password, email } = req.body;
+
+    try {
+        // Check if the username or email already exists
+        const existingUser = await userCollection.findOne({
+            $or: [{ username: username }, { email: email }],
+        });
+
+        if (existingUser) {
+            return res.status(400).json({ error: "Username or email already exists." });
+        }
+
+        // Insert new user into the database
+        await userCollection.insertOne({ username, password, email });
+        res.status(201).json({ message: "Registration successful!" });
+    } catch (err) {
+        console.error("Error during registration:", err);
+        res.status(500).json({ error: "An error occurred. Please try again." });
+    }
 });
 
-/*
-app.get(studentID + register, async (req, res) => {
-    if (req.query.q === undefined) {
-        res.send({error: true, message: "No query parameter"})
-        return;
-    }
-    const query = {name: req.query.q};
-
-    const results = await userCollection.find(query).toArray();
-    res.send(results);
-})
-*/
-
-app.get(studentID + register, (req, res) => {
-    const query = { $text : { $search: $username_text} }
-})
 
 // Login
 /* Session management is applied correctly to track user’s login status across multiple HTTP
@@ -93,19 +76,58 @@ app.get(studentID + login, (req, res) => {
     /* Client sends GET request for login status to web service. Web service returns login
     status in JSON format.
     */
+    if (req.session && req.session.user) {
+        res.json({ loggedIn: true, user: req.session.user });
+    } else {
+        res.json({ loggedIn: false, user: null });
+    }
 })
 
-app.post(studentID + login, (req, res) => {
+app.post(studentID + login, async (req, res) => {
     /* Client sends user’s login data in JSON format to web service with a POST request.
     User’s login data is checked against user records in MongoDB. Web service replies
     with the result of the operation in JSON format.
     */
+    const { username, password } = req.body;
+
+    try {
+        // Check if the user exists in the database
+        const user = await userCollection.findOne({ username: username });
+
+        if (!user) {
+            return res.status(400).json({ error: "User does not exist." });
+        }
+
+        // Validate the password
+        if (user.password !== password) {
+            return res.status(401).json({ error: "Invalid password." });
+        }
+
+        // Set up session data
+        req.session.user = { username: user.username, email: user.email };
+        res.status(200).json({ message: "Login successful!" });
+    } catch (err) {
+        console.error("Error during login:", err);
+        res.status(500).json({ error: "An error occurred. Please try again." });
+    }
 })
 
 app.delete(studentID + login, (req, res) => {
     /* Client sends DELETE request to log the user out. Web service replies with confirmation
        message in JSON format.
     */
+    if (req.session) {
+        // Destroy session
+        req.session.destroy((err) => {
+            if (err) {
+                console.error("Error during logout:", err);
+                return res.status(500).json({ error: "Failed to log out. Please try again." });
+            }
+            res.status(200).json({ message: "Logout successful!" });
+        });
+    } else {
+        res.status(400).json({ error: "No active session to log out." });
+    }
 })
 
 // Social networking
