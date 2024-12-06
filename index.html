@@ -14,7 +14,7 @@
     Make Post
     Search Posts
     -->
-    <div id="loginDiv" class="modal">
+    <div class="modal" id="loginDiv">
         <div>
             <label class="text" for="username">Username</label>
             <input class="inputField" id="username" name="username" type="text" size="32" placeholder="" required>
@@ -27,7 +27,7 @@
         <div id="message" class="message"></div>
     </div>
 
-    <div id="registrationDiv" class="modal">
+    <div class="modal" id="registrationDiv">
         <div>
             <label class="text" for="username">Username</label>
             <input class="inputField" id="username" name="username" type="text" size="32" placeholder="" required>
@@ -44,11 +44,10 @@
         <div class="message" id="message"></div>
     </div>
 
-    <div id="homeDiv" class="modal">
-        ...
+    <div class="modal" id="homeDiv">
     </div>
 
-    <div id="makePostDiv" class="modal">
+    <div class="modal" id="makePostDiv">
         <div>
             <label class="text" for="comment">Comment</label>
             <input class="inputField" id="comment" name="comment" type="text" width="32" height="10" placeholder="Write a comment..." required>
@@ -59,8 +58,12 @@
         </div>
     </div>
 
-    <div id="searchPostsDiv" class="modal">
-        ...
+    <div class="modal" id="searchDiv">
+        <div>
+            <input class="inputField" id="search" name="search" type="text" width="32" height="10" placeholder="Search" required>
+        </div>
+        <button class="button" id="registerButton">Find</button>
+        <div class="message" id="message"></div>
     </div>
 </body>
 </html>

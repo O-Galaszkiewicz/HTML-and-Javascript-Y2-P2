@@ -17,7 +17,7 @@ loginButton.addEventListener("click", async () => {
         messageDiv.textContent = "Both fields are required.";
         messageDiv.className = "message error";
         return;
-    }
+    };
 
     try {
         // Send a POST request to the login endpoint
@@ -26,7 +26,7 @@ loginButton.addEventListener("click", async () => {
             headers: {
                 "Content-Type": "application/json",
             },
-            body: JSON.stringify(loginData),
+            body: JSON.stringify(loginData)
         });
 
         // Parse the response JSON
@@ -37,9 +37,9 @@ loginButton.addEventListener("click", async () => {
             messageDiv.textContent = result.message;
             messageDiv.className = "message success";
 
-            // Optionally, redirect to another page after login
+            // Redirect to another page after login
             setTimeout(() => {
-                window.location.href = "/home"; // Adjust the path as needed
+                window.location.href = "/M00950516/contents";
             }, 2000);
         } else {
             // Display error message
