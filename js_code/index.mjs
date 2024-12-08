@@ -1,7 +1,7 @@
 // Imports
-import express, { query } from './express';
-import bodyParser from './body-parser';
-import expressSession from './express-session';
+import express, { query } from 'express';
+import bodyParser from 'body-parser';
+import expressSession from 'express-session';
 import { MongoClient, ServerApiVersion, ObjectId } from 'mongodb';
 import { handleClientError, handleSuccessOK, validateRequestBody, handleServerError, handleUnauthorizedError, handleNotFoundError, handleSuccessCreated } from './errorHandler.mjs';
 
@@ -130,7 +130,7 @@ app.delete(studentID + login, (req, res) => {
             handleSuccessOK(res, null, "Logout Successful!");
         });
     } else {
-        handleClientError(res, 400, "No actice session to log out.");
+        handleClientError(res, 400, "No active session to log out.");
     };
 });
 
