@@ -1,6 +1,8 @@
 // Select the necessary elements
 const usernameInput = document.getElementById("username");
+const emailInput = document.getElementById("email");
 const passwordInput = document.getElementById("password");
+const confirmPasswordInput = document.getElementById("confirmPassword");
 const loginButton = document.getElementById("loginButton");
 const messageDiv = document.getElementById("message");
 
@@ -9,12 +11,14 @@ loginButton.addEventListener("click", async () => {
     // Collect login data
     const loginData = {
         username: usernameInput.value.trim(),
+        email: emailInput.value.trim(),
         password: passwordInput.value.trim(),
+        confirmPass: confirmPasswordInput.value.trim()
     };
 
     // Validate inputs
-    if (!loginData.username || !loginData.password) {
-        messageDiv.textContent = "Both fields are required.";
+    if (!loginData.username || !loginData.email || !loginData.password || !loginData.confirmPass) {
+        messageDiv.textContent = "All fields are required.";
         messageDiv.className = "message error";
         return;
     };

@@ -51,8 +51,15 @@ export function handleClientError(res, statusCode = 400, message = "") {
 }
 
 //     Handle Invalid Request (400) error
-export function handleInvalidRequestError(res, message = "") {
-    handleClientError(res, 400, message);
+export function handleInvalidRequestError(res, errors) {
+    // If the errors is an array (i.e., multiple errors from validationResult)
+    if (Array.isArray(errors)) {
+        const errorMessages = errors.map(err => `${err.param}: ${err.msg}`).join(", ");
+        return handleClientError(res, 400, `Validation errors: ${errorMessages}`);
+    }
+
+    // Otherwise, handle a single error message
+    return handleClientError(res, 400, errors);
 }
 
 //     Handle Unauthorized (401) error (for cases where the user is accessing content without permission)
