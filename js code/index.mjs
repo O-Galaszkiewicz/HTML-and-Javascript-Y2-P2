@@ -63,7 +63,13 @@ app.post(studentID + users, async (req, res) => {
         };
 
         // Insert new user into the database
-        await usersCollection.insertOne({ username, password, email });
+        await usersCollection.insertOne({
+            username,
+            password,
+            email,
+            follows: []
+        });
+
         handleSuccessCreated(res, null, "Registration successful!");
     } catch (err) {
         handleServerError(res, err, "Error during registration.");
@@ -101,8 +107,11 @@ app.post(studentID + login, async (req, res) => {
             return handleUnauthorizedError(res, "Invalid credentials.");
         };
 
+        // Create a session for the logged-in user
         req.session.user = { username: user.username, email: user.email };
-        handleSuccessOK(res, null, "Registration Successful!");
+
+        // Send success response
+        handleSuccessOK(res, null, "Login Successful!");
     } catch (err) {
         handleServerError(res, err, "Error during login.");
     };
@@ -131,16 +140,20 @@ app.post(studentID + contents, async (req, res) => {
        POST request. Contents are stored in MongoDB. Web service replies with the result of
        the operation in JSON format.
     */
-    const { author, author_email, author_text, author_image } = req.body;
+    const { username, text, image } = req.body;
 
-    if (!title || !content || !author) {
-        return handleClientError(res, 400, "Title, content, and author are required.");
+    if (!text && !image) {
+        return handleClientError(res, 400, "Content is required.");
+    };
+
+    if (image && !isValidImage(image)) {
+        return handleClientError(res, 400, "Invalid image format.");
     };
 
     try {
         // Insert the content into the database
-        const result = await postsCollection.insertOne({ author, author_email, author_text, author_image, createdAt: new Date() });
-        handleSuccessCreated(res, result.insertedId, "Content posted successfully!");
+        const result = await postsCollection.insertOne({ username, text, image, createdAt: new Date() });
+        handleSuccessCreated(res, { id: result.insertedId, username, text, image }, "Content posted successfully!");
     } catch (err) {
         handleServerError(res, err, "Failed to post content. Please try again.");
     };
@@ -166,7 +179,7 @@ app.get(studentID + contents, async (req, res) => {
         };
 
         // Fetch posts from followed users
-        const posts = await postsCollection.find({ author: { $in: user.follows } }).toArray();
+        const posts = await postsCollection.find({ username: { $in: user.follows } }).toArray();
 
         handleSuccessOK(res, posts, "Found Content!");
     } catch (err) {
@@ -186,9 +199,18 @@ app.post(studentID + follow, async (req, res) => {
 
     const { usernameToFollow } = req.body;
     const currentUser = req.session.user.username;
+    const userToFollow = await usersCollection.findOne({ username: usernameToFollow });
 
     if (!usernameToFollow) {
         return handleClientError(res, 400, "Username to follow is required.");
+    };
+
+    if (!userToFollow) {
+        return handleClientError(res, 400, "User doesn't exist.");
+    };
+
+    if (usernameToFollow === currentUser) {
+        return handleClientError(res, 400, "You cannot follow yourself.");
     };
 
     try {
@@ -245,7 +267,12 @@ app.get(studentID + users + search, async (req, res) => {
         return handleClientError(res, 400, "No query specified");
     };
 
-    const results = await usersCollection.find({ $text: { $search: searchTerm } }).toArray();
+    const results = await postsCollection.find({
+        $or: [
+            { username: { $regex: searchTerm, $options: "i" } },
+            { email: { $regex: searchTerm, $options: "i" } }
+        ]
+    }).toArray();
 
     res.send(results);
 });
@@ -262,9 +289,19 @@ app.get(studentID + contents + search, async (req, res) => {
         return handleClientError(res, 400, "No query specified");
     };
 
-    const results = await postsCollection.find({ $text: { $search: searchTerm } }).toArray();
+    const results = await postsCollection.find({
+        $or: [
+            { username: { $regex: searchTerm, $options: "i" } },
+            { email: { $regex: searchTerm, $options: "i" } },
+            { text: { $regex: searchTerm, $options: "i" } }
+        ]
+    }).toArray();
 
     res.send(results);
 });
+
+function isValidImage(image) {
+    return /^(https?;\/\/.*\.(?:png|jpe?g|gif|webp|svg))$/i.test(image);
+};
 
 app.listen(8080, () => console.log("Server running on port 8080"));
