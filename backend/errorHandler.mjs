@@ -45,7 +45,7 @@ export function handleServerError(res, error, message = "Internal Server Error")
     handleError(res, 500, message, error);
 };
 
-//     Client (400) Errors:
+//     Client (4**) Errors:
 export function handleClientError(res, statusCode = 400, message = "") {
     handleError(res, statusCode, message);
 };

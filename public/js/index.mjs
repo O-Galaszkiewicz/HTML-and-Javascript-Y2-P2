@@ -20,6 +20,5 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('searchButton').addEventListener('click', function() {
         const searchQuery = document.getElementById('search').value;
         console.log("Searching for posts with query: " + searchQuery);
-        // Add your search logic here
     });
 });
