@@ -4,10 +4,10 @@ import expressSession from "express-session";
 import { body, query, validationResult } from "express-validator";
 import bodyParser from "body-parser";
 import mongoose from "mongoose";
-import User from "../models/user.mjs";
-import Post from "../models/post.mjs";
-import { hashPassword, comparePassword } from "./bcryptUtils.mjs";
-import ensureDatabaseSetup from "./databaseSetup.mjs";
+import User from "./models/user.mjs";
+import Post from "./models/post.mjs";
+import { hashPassword, comparePassword } from "./backend/bcryptUtils.mjs";
+import ensureDatabaseSetup from "./backend/databaseSetup.mjs";
 import {
     handleClientError,
     handleSuccessOK,
@@ -15,8 +15,9 @@ import {
     handleServerError,
     handleUnauthorizedError,
     handleNotFoundError,
+    handleInvalidRequestError,
     handleSuccessCreated,
-} from "./errorHandler.mjs";
+} from "./backend/errorHandler.mjs";
 
 const app = express();
 app.use(bodyParser.json());
@@ -39,9 +40,7 @@ mongoose.connect(connectionURI)
     })
     .then(() => {
         // After the database setup completes, start your server
-        app.listen(3000, () => {
-            console.log("Server is running on http://localhost:3000");
-        });
+        app.listen(8080, () => console.log("Server running on port 8080"));
     })
     .catch((err) => {
         console.error("Error connecting to MongoDB or setting up the database:", err);
@@ -63,7 +62,7 @@ const isAuth = (req, res, next) => {
     };
 };
 
-app.use(express.static("../frontend"));
+app.use(express.static("public"));
 
 // Registration
 app.post(studentID + users,
@@ -105,7 +104,7 @@ app.post(studentID + users,
     });
 
 // Login
-app.get(studentID + login, isAuth, (req, res) => {
+app.get(studentID + login, (req, res) => {
     if (req.session && req.session.user) {
         res.json({ loggedIn: true, user: req.session.user });
     } else {
@@ -149,8 +148,8 @@ app.post(studentID + login,
         };
     });
 
-app.delete(studentID + login, isAuth, (req, res) => {
-    if (req.session) {
+app.delete(studentID + login, (req, res) => {
+    if (req.session && req.session.user) {
         req.session.destroy(err => {
             if (err) {
                 return handleServerError(res, err, "Failed to log out. Please try again.");
@@ -294,5 +293,3 @@ app.get(studentID + contents + search,
 
         res.send(results);
     });
-
-app.listen(8080, () => console.log("Server running on port 8080"));

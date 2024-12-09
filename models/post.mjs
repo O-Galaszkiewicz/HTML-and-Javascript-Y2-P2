@@ -12,7 +12,7 @@ const postSchema = new mongoose.Schema({
     },
     createdAt: {
         type: Date,
-        default: Date.now // Automatically set the creation date
+        default: Date.now // Automatically set the date
     }
 });
 

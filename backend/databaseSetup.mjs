@@ -11,7 +11,7 @@ const ensureDatabaseSetup = async () => {
         // Create a default admin user
         const adminUser = new User({
             username: "admin",
-            password: await hashPassword("adminpassword"),  // Make sure to hash the password
+            password: await hashPassword("adminpassword"),
             email: "admin@example.com",
             follows: [],
         });
