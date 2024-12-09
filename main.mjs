@@ -125,7 +125,6 @@ app.post(studentID + login,
 
         try {
             const user = await db.collection("users").findOne({ username });
-
             if (!user) {
                 return handleUnauthorizedError(res, "Invalid credentials.");
             }
@@ -135,8 +134,8 @@ app.post(studentID + login,
                 return handleUnauthorizedError(res, "Invalid credentials.");
             }
 
-            req.session.user = { username: user.username };
             req.session.isAuth = true;
+            req.session.user = { username: user.username };
             handleSuccessOK(res, null, "Login successful!");
         } catch (err) {
             handleServerError(res, err, "Error during login.");

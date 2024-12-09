@@ -6,15 +6,23 @@ function hideAllModals() {
     });
 }
 
-// Function to show the modal corresponding to the given page
-function loadModalBasedOnPath() {
+// Function to check if the user is logged in
+async function isLoggedIn() {
+    const response = await fetch('/login');
+    const data = await response.json();
+    return data.loggedIn; // Will return true if the user is logged in, false otherwise
+}
+
+// Function to load the modal based on the path
+async function loadModalBasedOnPath() {
     // Hide all modals first
     hideAllModals();
 
     // Get the current path
     const path = window.location.pathname;
 
-    // Show the appropriate modal based on the path
+    const loggedIn = await isLoggedIn(); // Check if the user is logged in
+
     if (path === '/login') {
         document.getElementById('loginDiv').style.display = 'block';
         handleLoginRequest();  // Handle GET or POST for login
@@ -22,13 +30,25 @@ function loadModalBasedOnPath() {
         document.getElementById('registrationDiv').style.display = 'block';
         handleRegistrationRequest();  // Handle POST for registration
     } else if (path === '/home') {
-        document.getElementById('homeDiv').style.display = 'block';
-        loadHomePosts();  // Handle GET for posts
+        if (!loggedIn) {
+            window.location.href = '/login';  // Redirect to login if not logged in
+        } else {
+            document.getElementById('homeDiv').style.display = 'block';
+            loadHomePosts();  // Handle GET for posts
+        }
     } else if (path === '/follow') {
-        document.getElementById('followDiv').style.display = 'block';
-        loadFollowList();  // Handle GET for users to follow
+        if (!loggedIn) {
+            window.location.href = '/login';  // Redirect to login if not logged in
+        } else {
+            document.getElementById('followDiv').style.display = 'block';
+            loadFollowList();  // Handle GET for users to follow
+        }
     } else if (path === '/make-post') {
-        document.getElementById('makePostDiv').style.display = 'block';
+        if (!loggedIn) {
+            window.location.href = '/login';  // Redirect to login if not logged in
+        } else {
+            document.getElementById('makePostDiv').style.display = 'block';
+        }
     }
 }
 
