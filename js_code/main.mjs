@@ -7,6 +7,7 @@ import mongoose from "mongoose";
 import User from "../models/user.mjs";
 import Post from "../models/post.mjs";
 import { hashPassword, comparePassword } from "./bcryptUtils.mjs";
+import ensureDatabaseSetup from "./databaseSetup";
 import {
     handleClientError,
     handleSuccessOK,
@@ -31,12 +32,20 @@ const search = "/search";
 // MongoDB Connection (Mongoose)
 const connectionURI = "mongodb://127.0.0.1:27017/cst2120";
 
-mongoose.connect(connectionURI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-})
-    .then(() => console.log("Connected to MongoDB using Mongoose"))
-    .catch(err => console.error("MongoDB connection error:", err));
+mongoose.connect(connectionURI)
+    .then(() => {
+        console.log("Connected to MongoDB");
+        return ensureDatabaseSetup();  // Call ensureDatabaseSetup after a successful connection
+    })
+    .then(() => {
+        // After the database setup completes, start your server
+        app.listen(3000, () => {
+            console.log("Server is running on http://localhost:3000");
+        });
+    })
+    .catch((err) => {
+        console.error("Error connecting to MongoDB or setting up the database:", err);
+    });
 
 // Cookie
 app.use(expressSession({
