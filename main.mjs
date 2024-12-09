@@ -12,7 +12,7 @@ import {
     handleUnauthorizedError,
     handleNotFoundError,
     handleInvalidRequestError,
-    handleSuccessCreated,
+    handleSuccessCreated
 } from "./backend/errorHandler.mjs";
 
 const app = express();
@@ -214,8 +214,8 @@ app.post(studentID + follow,
             return handleInvalidRequestError(res, errors.array());
         }
 
-        const { usernameToFollow } = req.body;
         const currentUser = req.session.user.username;
+        const { usernameToFollow } = req.body;
 
         if (usernameToFollow === currentUser) {
             return handleClientError(res, 400, "You cannot follow yourself.");
@@ -243,8 +243,8 @@ app.post(studentID + follow,
 
 // Unfollow a User
 app.delete(studentID + follow, isAuth, async (req, res) => {
-    const { usernameToUnfollow } = req.body;
     const currentUser = req.session.user.username;
+    const { usernameToUnfollow } = req.body;
 
     if (!usernameToUnfollow) {
         return handleClientError(res, 400, "Username to unfollow is required.");
