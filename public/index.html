@@ -4,21 +4,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Website</title>
-    <script type="module" src="../main.mjs"></script>
-    <link rel="stylesheet" href="css/style.css">
+    <script type="module" src="./js/index.mjs"></script>
+    <link rel="stylesheet" href="./css/style.css">
 </head>
 <body>
     <!-- Login Modal -->
     <div class="modal" id="loginDiv">
         <div>
             <label class="text" for="username">Username</label>
-            <input class="inputField" id="username" name="username" type="text" size="32" placeholder="" required>
+            <input class="inputField" id="loginUsername" name="username" type="text" size="32" placeholder="" required>
         </div>
         <div>
             <label class="text" for="password">Password</label>
-            <input class="inputField" id="password" name="password" type="password" size="32" placeholder="" required>
+            <input class="inputField" id="loginPassword" name="password" type="password" size="32" placeholder="" required>
         </div>
-        <button id="loginButton">Login</button>
+        <button id="loginButton" onclick="">Login</button>
         <div id="message" class="message"></div>
     </div>
 
@@ -26,17 +26,17 @@
     <div class="modal" id="registrationDiv">
         <div>
             <label class="text" for="username">Username</label>
-            <input class="inputField" id="username" name="username" type="text" size="32" placeholder="" required>
+            <input class="inputField" id="registerUsername" name="username" type="text" size="32" placeholder="" required>
         </div>
         <div>
             <label class="text" for="password">Password</label>
-            <input class="inputField" id="password" name="password" type="text" size="32" placeholder="" required>
+            <input class="inputField" id="registerPassword" name="password" type="password" size="32" placeholder="" required>
         </div>
         <div>
             <label class="text" for="email">Email</label>
             <input class="inputField" id="email" name="email" type="text" size="32" placeholder="" required>
         </div>
-        <button class="button" id="registerButton">Register</button>
+        <button class="button" id="registerButton" onclick="">Register</button>
         <div class="message" id="message"></div>
     </div>
 
@@ -45,7 +45,7 @@
         <h2>Welcome to the Contents Page</h2>
         <div id="postsList"></div>
         <input class="inputField" id="search" name="search" type="text" placeholder="Search for posts..." required>
-        <button class="button" id="searchButton">Search</button>
+        <button class="button" id="searchButton" onclick="">Search</button>
     </div>
 
     <!-- Follow Modal -->
@@ -53,7 +53,7 @@
         <h2>Follow Users</h2>
         <div id="followList"></div>
         <input class="inputField" id="searchFollow" name="searchFollow" type="text" placeholder="Search for users to follow..." required>
-        <button class="button" id="searchFollowButton">Search</button>
+        <button class="button" id="searchFollowButton" onclick="">Search</button>
     </div>
 
     <!-- Make Post Modal -->
@@ -65,6 +65,9 @@
         <div>
             <label class="text" for="file">File/Image</label>
             <input class="inputField" id="file" name="file" type="file" placeholder="Search for file">
+        </div>
+        <div>
+            <button class="button" id="postButton" onclick="">Upload</button>
         </div>
     </div>
 </body>
