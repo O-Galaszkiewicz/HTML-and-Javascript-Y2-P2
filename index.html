@@ -3,17 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Website</title>
+    <script type="module" src="main.mjs"></script>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <!--
-    Stuff to have:
-    Login
-    Registration
-    Home
-    Make Post
-    Search Posts
-    -->
+    <!-- Login Modal -->
     <div class="modal" id="loginDiv">
         <div>
             <label class="text" for="username">Username</label>
@@ -27,6 +22,7 @@
         <div id="message" class="message"></div>
     </div>
 
+    <!-- Registration Modal -->
     <div class="modal" id="registrationDiv">
         <div>
             <label class="text" for="username">Username</label>
@@ -44,9 +40,23 @@
         <div class="message" id="message"></div>
     </div>
 
+    <!-- Home (Contents) Page Modal -->
     <div class="modal" id="homeDiv">
+        <h2>Welcome to the Contents Page</h2>
+        <div id="postsList"></div>
+        <input class="inputField" id="search" name="search" type="text" placeholder="Search for posts..." required>
+        <button class="button" id="searchButton">Search</button>
     </div>
 
+    <!-- Follow Modal -->
+    <div class="modal" id="followDiv">
+        <h2>Follow Users</h2>
+        <div id="followList"></div>
+        <input class="inputField" id="searchFollow" name="searchFollow" type="text" placeholder="Search for users to follow..." required>
+        <button class="button" id="searchFollowButton">Search</button>
+    </div>
+
+    <!-- Make Post Modal -->
     <div class="modal" id="makePostDiv">
         <div>
             <label class="text" for="comment">Comment</label>
@@ -56,14 +66,6 @@
             <label class="text" for="file">File/Image</label>
             <input class="inputField" id="file" name="file" type="file" placeholder="Search for file">
         </div>
-    </div>
-
-    <div class="modal" id="searchDiv">
-        <div>
-            <input class="inputField" id="search" name="search" type="text" width="32" height="10" placeholder="Search" required>
-        </div>
-        <button class="button" id="registerButton">Find</button>
-        <div class="message" id="message"></div>
     </div>
 </body>
 </html>

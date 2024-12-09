@@ -1,3 +1,4 @@
+/*
 body {
     font-family: Arial, sans-serif;
     margin: 20px;
@@ -45,4 +46,110 @@ button:hover {
 
 .error {
     color: red;
+}
+*/
+/* General Modal Styling */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.4);
+    padding-top: 60px;
+}
+
+/* Modal Content Box */
+.modal > div {
+    background-color: #fff;
+    margin: 5% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 500px;
+    border-radius: 10px;
+}
+
+/* Input Field Styling */
+.inputField {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+/* Text Label Styling */
+.text {
+    font-size: 16px;
+    margin-bottom: 5px;
+    display: block;
+}
+
+/* Button Styling */
+.button {
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 10px;
+    display: block;
+    width: 100%;
+}
+
+/* Hover Effects for Button */
+.button:hover {
+    background-color: #45a049;
+}
+
+/* Message Display Area */
+.message {
+    color: red;
+    margin-top: 10px;
+}
+
+/* Modal Header (for Titles like "Login", "Register") */
+.modal > div > h2 {
+    margin: 0;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+/* Specific Styling for Each Modal */
+#homeDiv {
+    background-color: #f9f9f9;
+}
+
+#followDiv {
+    background-color: #e8f5e9;
+}
+
+#makePostDiv {
+    background-color: #f1f1f1;
+}
+
+/* Search Bar Styling */
+#search, #searchFollow {
+    width: calc(100% - 20px);
+    padding: 10px;
+    margin-top: 10px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .modal > div {
+        width: 90%;
+        margin-top: 20px;
+    }
+
+    .inputField, .button {
+        font-size: 14px;
+    }
 }
