@@ -1,13 +1,13 @@
 // Imports
 import express from "express";
 import expressSession from "express-session";
-import { body, validationResult } from "express-validator";
+import { body, query, validationResult } from "express-validator";
 import bodyParser from "body-parser";
 import mongoose from "mongoose";
 import User from "../models/user.mjs";
 import Post from "../models/post.mjs";
 import { hashPassword, comparePassword } from "./bcryptUtils.mjs";
-import ensureDatabaseSetup from "./databaseSetup";
+import ensureDatabaseSetup from "./databaseSetup.mjs";
 import {
     handleClientError,
     handleSuccessOK,

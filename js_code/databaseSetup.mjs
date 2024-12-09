@@ -1,4 +1,4 @@
-import User, { exists } from './models/user';
+import User, { exists } from '../models/user.mjs';
 import { hashPassword } from "./bcryptUtils.mjs";
 
 const ensureDatabaseSetup = async () => {
