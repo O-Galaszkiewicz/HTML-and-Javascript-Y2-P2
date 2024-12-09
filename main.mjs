@@ -136,6 +136,7 @@ app.post(studentID + login,
             }
 
             req.session.user = { username: user.username };
+            req.session.isAuth = true;
             handleSuccessOK(res, null, "Login successful!");
         } catch (err) {
             handleServerError(res, err, "Error during login.");
@@ -143,8 +144,8 @@ app.post(studentID + login,
     }
 );
 
-app.delete(studentID + login, (req, res) => {
-    if (req.session && req.session.user) {
+app.delete(studentID + login, isAuth, (req, res) => {
+    if (req.session.isAuth) {
         req.session.destroy(err => {
             if (err) {
                 return handleServerError(res, err, "Failed to log out. Please try again.");
@@ -158,7 +159,8 @@ app.delete(studentID + login, (req, res) => {
 
 // Post Routes
 app.post(studentID + contents, isAuth, async (req, res) => {
-    const { username, text } = req.body;
+    const username = req.session.user.username;
+    const { text } = req.body;
 
     if (!text) {
         return handleClientError(res, 400, "Content is required.");
