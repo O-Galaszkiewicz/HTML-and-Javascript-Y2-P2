@@ -1,24 +1,122 @@
-document.addEventListener('DOMContentLoaded', function() {
-    // Get current path
+// Function to hide all modals
+function hideAllModals() {
+    const modals = document.querySelectorAll('.modal');
+    modals.forEach(modal => {
+        modal.style.display = 'none';
+    });
+}
+
+// Function to show the modal corresponding to the given page
+function loadModalBasedOnPath() {
+    // Hide all modals first
+    hideAllModals();
+
+    // Get the current path
     const path = window.location.pathname;
 
-    // Default to show contents page (homeDiv)
-    if (path.includes("/M00950516/contents")) {
-        document.getElementById('homeDiv').style.display = 'block';  // Show contents page
-    } else if (path.includes("/M00950516/login")) {
-        document.getElementById('loginDiv').style.display = 'block';  // Show login page
-    } else if (path.includes("/M00950516/users")) {
-        document.getElementById('registrationDiv').style.display = 'block';  // Show registration page
-    } else if (path.includes("/M00950516/follow")) {
-        document.getElementById('followDiv').style.display = 'block';  // Show follow page
-    } else {
-        // Default to contents page
-        window.location.href = '/M00950516/contents';  // Redirect to contents page if no path matches
+    // Show the appropriate modal based on the path
+    if (path === '/login') {
+        document.getElementById('loginDiv').style.display = 'block';
+        handleLoginRequest();  // Handle GET or POST for login
+    } else if (path === '/registration') {
+        document.getElementById('registrationDiv').style.display = 'block';
+        handleRegistrationRequest();  // Handle POST for registration
+    } else if (path === '/home') {
+        document.getElementById('homeDiv').style.display = 'block';
+        loadHomePosts();  // Handle GET for posts
+    } else if (path === '/follow') {
+        document.getElementById('followDiv').style.display = 'block';
+        loadFollowList();  // Handle GET for users to follow
+    } else if (path === '/make-post') {
+        document.getElementById('makePostDiv').style.display = 'block';
     }
+}
 
-    // Handle search button for contents page
-    document.getElementById('searchButton').addEventListener('click', function() {
-        const searchQuery = document.getElementById('search').value;
-        console.log("Searching for posts with query: " + searchQuery);
+// Handle Login Form (POST Request)
+async function handleLoginRequest() {
+    const loginButton = document.getElementById('loginButton');
+    loginButton.addEventListener('click', async () => {
+        const username = document.getElementById('username').value;
+        const password = document.getElementById('password').value;
+        
+        const response = await fetch('/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ username, password }),
+        });
+
+        const data = await response.json();
+        if (data.success) {
+            window.location.href = '/home';  // Redirect to home on successful login
+        } else {
+            document.getElementById('message').innerText = data.message;  // Show error message
+        }
     });
+}
+
+// Handle Registration Form (POST Request)
+async function handleRegistrationRequest() {
+    const registerButton = document.getElementById('registerButton');
+    registerButton.addEventListener('click', async () => {
+        const username = document.getElementById('username').value;
+        const password = document.getElementById('password').value;
+        const email = document.getElementById('email').value;
+
+        const response = await fetch('/register', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ username, password, email }),
+        });
+
+        const data = await response.json();
+        if (data.success) {
+            window.location.href = '/login';  // Redirect to login on successful registration
+        } else {
+            document.getElementById('message').innerText = data.message;  // Show error message
+        }
+    });
+}
+
+// Handle Loading Home Page Posts (GET Request)
+async function loadHomePosts() {
+    const postsList = document.getElementById('postsList');
+    const response = await fetch('/posts');
+    const posts = await response.json();
+    postsList.innerHTML = '';  // Clear previous posts
+
+    posts.forEach(post => {
+        const postElement = document.createElement('div');
+        postElement.classList.add('post');
+        postElement.innerHTML = `<p>${post.comment}</p><p>by ${post.username}</p>`;
+        postsList.appendChild(postElement);
+    });
+}
+
+// Handle Loading Follow List (GET Request)
+async function loadFollowList() {
+    const followList = document.getElementById('followList');
+    const response = await fetch('/follow');
+    const users = await response.json();
+    followList.innerHTML = '';  // Clear previous users
+
+    users.forEach(user => {
+        const userElement = document.createElement('div');
+        userElement.classList.add('user');
+        userElement.innerHTML = `<p>${user.username}</p>`;
+        followList.appendChild(userElement);
+    });
+}
+
+// Event listener for DOM content loaded
+document.addEventListener('DOMContentLoaded', () => {
+    loadModalBasedOnPath();
+});
+
+// Event listener for history changes (e.g., client-side routing)
+window.addEventListener('popstate', () => {
+    loadModalBasedOnPath();
 });
