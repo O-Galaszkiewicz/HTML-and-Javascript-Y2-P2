@@ -24,7 +24,7 @@ const fetchJSON = async (url, options = {}) => {
     const response = await fetch(url, options);
     const data = await response.json();
     if (!response.ok) {
-        throw new Error(data.message || "Something went wrong");
+        throw new Error(data.error || "Something went wrong");
     }
     return data;
 };
@@ -38,12 +38,12 @@ loginButton.addEventListener("click", async () => {
         const response = await fetchJSON("/M00950516/login", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ username, password }),
+            body: JSON.stringify({ username, password })
         });
         alert(response.message);
         showModal(homeDiv);
-    } catch (error) {
-        document.getElementById("loginMessage").textContent = error.message;
+    } catch (err) {
+        document.getElementById("loginMessage").textContent = err.message;
     }
 });
 
