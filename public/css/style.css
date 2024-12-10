@@ -15,6 +15,10 @@ body {
     z-index: 1000;
 }
 
+.modal.hidden {
+    display: none !important;
+}
+
 .modal h2 {
     margin-top: 0;
 }

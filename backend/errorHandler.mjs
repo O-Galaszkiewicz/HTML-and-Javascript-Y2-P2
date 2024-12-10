@@ -54,7 +54,7 @@ export function handleClientError(res, statusCode = 400, message = "") {
 export function handleInvalidRequestError(res, errors) {
     // If the errors is an array (i.e., multiple errors from validationResult)
     if (Array.isArray(errors)) {
-        const errorMessages = errors.map(err => `${err.param}: ${err.msg}`).join(", ");
+        const errorMessages = errors.map(err => `${err.msg}\n`).join(", ");
         return handleClientError(res, 400, `Validation errors: ${errorMessages}`);
     }
 
