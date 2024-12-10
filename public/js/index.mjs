@@ -14,7 +14,7 @@ const postButton = document.getElementById("postButton");
 const searchButton = document.getElementById("searchButton");
 const searchFollowButton = document.getElementById("searchFollowButton");
 
-// Helper functions
+// Show a specific modal
 const showModal = (modal) => {
     [loginDiv, registrationDiv, homeDiv, followDiv, makePostDiv].forEach(div => div.classList.add("hidden"));
     modal.classList.remove("hidden");
@@ -129,6 +129,12 @@ searchButton.addEventListener("click", async () => {
 // Make a Post
 makePostButton.addEventListener("click", () => {
     showModal(makePostDiv);
+});
+
+// Closing Make Post Modal
+const closePostModal = document.getElementById("closePostModal");
+closePostModal.addEventListener("click", () => {
+    makePostDiv.classList.add("hidden");
 });
 
 // Initialization: Check login status on page load

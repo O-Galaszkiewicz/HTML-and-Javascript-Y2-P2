@@ -47,18 +47,23 @@
     </div>
 
     <!-- Content Modal -->
-    <div class="modal" id="homeDiv">
-        <h2 class="text">Content Page</h2>
-        <div class="search-bar">
-            <select class="text" id="searchType">
-                <option value="user">User</option>
-                <option value="post">Post</option>
-            </select>
-            <input class="text" id="search" type="text" placeholder="Search..." required>
-            <button class="text" id="searchButton">Search</button>
+    <div class="full-page" id="homeDiv">
+        <header class="content-header">
+            <h2 class="text">Contents</h2>
+            <div class="search-bar">
+                <select class="text" id="searchType">
+                    <option value="user">User</option>
+                    <option value="post">Post</option>
+                </select>
+                <input class="text" id="search" type="text" placeholder="Search..." required>
+                <button class="text" id="searchButton">Search</button>
+            </div>
+            <button class="text" id="makePostButton">Make Post</button>
+        </header>
+        <div class="posts-area">
+            <div class="box" id="pinnedContent">Pinned Content Box</div>
+            <div id="postsList"></div>
         </div>
-        <button class="text" id="makePostButton">Make Post</button>
-        <div class="text" id="postsList"></div>
     </div>
 
     <!-- Follow Modal -->
@@ -81,6 +86,7 @@
             <input class="text" id="postImage" type="file" accept="image/*">
         </div>
         <button class="text" id="postButton">Post</button>
+        <button class="text close-modal" id="closePostModal">Close</button>
     </div>
 </body>
 
