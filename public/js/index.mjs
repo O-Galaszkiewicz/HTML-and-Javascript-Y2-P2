@@ -40,7 +40,7 @@ loginButton.addEventListener("click", async () => {
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ username, password })
         });
-        alert(response.message);
+        console.log(response.message);
         showModal(homeDiv);
     } catch (err) {
         document.getElementById("loginMessage").textContent = err.message;
@@ -64,7 +64,7 @@ registerButton.addEventListener("click", async () => {
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ username, password, email }),
         });
-        alert(response.message);
+        console.log(response.message);
         showModal(loginDiv);
     } catch (error) {
         document.getElementById("registerMessage").textContent = error.message;
@@ -86,10 +86,10 @@ postButton.addEventListener("click", async () => {
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ text }),
         });
-        alert(response.message);
+        console.log(response.message);
         showModal(homeDiv);
     } catch (error) {
-        alert(error.message);
+        console.log(error.message);
     }
 });
 
@@ -102,7 +102,7 @@ searchFollowButton.addEventListener("click", async () => {
         const followList = document.getElementById("followList");
         followList.innerHTML = response.data.map(user => `<div>${user.username}</div>`).join("");
     } catch (error) {
-        alert(error.message);
+        console.log(error.message);
     }
 });
 
@@ -122,7 +122,7 @@ searchButton.addEventListener("click", async () => {
             postsList.innerHTML = response.data.map(post => `<div>${post.text} by ${post.username}</div>`).join("");
         }
     } catch (error) {
-        alert(error.message);
+        console.log(error.message);
     }
 });
 

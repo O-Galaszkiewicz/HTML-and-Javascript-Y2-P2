@@ -15,14 +15,14 @@
         <h2 class="text">Login</h2>
         <div>
             <label class="text" for="loginUsername">Username</label>
-            <input id="loginUsername" type="text" required>
+            <input class="text" id="loginUsername" type="text" required>
         </div>
         <div>
             <label class="text" for="loginPassword">Password</label>
-            <input id="loginPassword" type="password" required>
+            <input class="text" id="loginPassword" type="password" required>
         </div>
+        <div id="loginMessage" class="text"></div>
         <button class="text" id="loginButton">Login</button>
-        <div id="loginMessage" class="message"></div>
         <button class="text" id="switchToRegister">Register</button>
     </div>
 
@@ -31,18 +31,18 @@
         <h2 class="text">Register</h2>
         <div>
             <label class="text" for="registerUsername">Username</label>
-            <input id="registerUsername" type="text" required>
+            <input class="text" id="registerUsername" type="text" required>
         </div>
         <div>
             <label class="text" for="registerPassword">Password</label>
-            <input id="registerPassword" type="password" required>
+            <input class="text" id="registerPassword" type="password" required>
         </div>
         <div>
             <label class="text" for="registerEmail">Email</label>
-            <input id="registerEmail" type="email" required>
+            <input class="text" id="registerEmail" type="email" required>
         </div>
+        <div id="registerMessage" class="text"></div>
         <button class="text" id="registerButton">Register</button>
-        <div id="registerMessage" class="message"></div>
         <button class="text" id="switchToLogin">Login</button>
     </div>
 
@@ -50,22 +50,22 @@
     <div class="modal" id="homeDiv">
         <h2 class="text">Content Page</h2>
         <div class="search-bar">
-            <select id="searchType">
-                <option class="text" value="user">User</option>
-                <option class="text" value="post">Post</option>
+            <select class="text" id="searchType">
+                <option value="user">User</option>
+                <option value="post">Post</option>
             </select>
-            <input id="search" type="text" placeholder="Search..." required>
+            <input class="text" id="search" type="text" placeholder="Search..." required>
             <button class="text" id="searchButton">Search</button>
         </div>
         <button class="text" id="makePostButton">Make Post</button>
-        <div id="postsList"></div>
+        <div class="text" id="postsList"></div>
     </div>
 
     <!-- Follow Modal -->
     <div class="modal" id="followDiv">
         <h2 class="text">Follow Users</h2>
         <div id="followList"></div>
-        <input id="searchFollow" type="text" placeholder="Search for users..." required>
+        <input class="text" id="searchFollow" type="text" placeholder="Search for users..." required>
         <button class="text" id="searchFollowButton">Search</button>
     </div>
 
@@ -74,11 +74,11 @@
         <h2 class="text">Create a Post</h2>
         <div>
             <label class="text" for="postContent">Comment</label>
-            <textarea id="postContent" rows="3" required></textarea>
+            <textarea class="text" id="postContent" rows="3" required></textarea>
         </div>
         <div>
             <label class="text" for="postImage">Upload Image</label>
-            <input id="postImage" type="file" accept="image/*">
+            <input class="text" id="postImage" type="file" accept="image/*">
         </div>
         <button class="text" id="postButton">Post</button>
     </div>
