@@ -1,143 +1,132 @@
-// // Function to hide all modals
-// function hideAllModals() {
-//     const modals = document.querySelectorAll('.modal');
-//     modals.forEach(modal => {
-//         modal.style.display = 'none';
-//     });
-// }
+document.addEventListener("DOMContentLoaded", () => {
+    const modals = {
+        login: document.getElementById("loginDiv"),
+        register: document.getElementById("registrationDiv"),
+        home: document.getElementById("homeDiv"),
+        follow: document.getElementById("followDiv"),
+        makePost: document.getElementById("makePostDiv")
+    };
 
-// // Function to check if the user is logged in
-// async function isLoggedIn() {
-//     const response = await fetch('/M00950516/login');
-//     const data = await response.json();
-//     return data.loggedIn; // Will return true if the user is logged in, false otherwise
-// }
+    const buttons = {
+        switchToRegister: document.getElementById("switchToRegister"),
+        switchToLogin: document.getElementById("switchToLogin"),
+        login: document.getElementById("loginButton"),
+        register: document.getElementById("registerButton"),
+        search: document.getElementById("searchButton"),
+        searchFollow: document.getElementById("searchFollowButton"),
+        makePost: document.getElementById("makePostButton"),
+        post: document.getElementById("postButton")
+    };
 
-// // Function to load the modal based on the path
-// async function loadModalBasedOnPath() {
-//     // Hide all modals first
-//     hideAllModals();
+    const inputs = {
+        loginUsername: document.getElementById("loginUsername"),
+        loginPassword: document.getElementById("loginPassword"),
+        registerUsername: document.getElementById("registerUsername"),
+        registerPassword: document.getElementById("registerPassword"),
+        registerEmail: document.getElementById("registerEmail"),
+        search: document.getElementById("search"),
+        searchType: document.getElementById("searchType"),
+        postContent: document.getElementById("postContent"),
+        postImage: document.getElementById("postImage")
+    };
 
-//     // Get the current path
-//     const path = window.location.pathname;
-//     console.log(path);
+    // Show a specific modal
+    const showModal = (modalToShow) => {
+        Object.values(modals).forEach(modal => modal.classList.add("hidden"));
+        modalToShow.classList.remove("hidden");
+    };
 
-//     const loggedIn = await isLoggedIn(); // Check if the user is logged in
+    // Event listeners
+    buttons.switchToRegister.addEventListener("click", () => showModal(modals.register));
+    buttons.switchToLogin.addEventListener("click", () => showModal(modals.login));
+    buttons.login.addEventListener("click", loginUser);
+    buttons.register.addEventListener("click", registerUser);
+    buttons.search.addEventListener("click", searchContent);
+    buttons.makePost.addEventListener("click", () => showModal(modals.makePost));
+    buttons.post.addEventListener("click", createPost);
 
-//     if (path === '/M00950516/login') {
-//         document.getElementById('loginDiv').style.display = 'block';
-//         handleLoginRequest();  // Handle GET or POST for login
-//     } else if (path === '/M00950516/registration') {
-//         document.getElementById('registrationDiv').style.display = 'block';
-//         handleRegistrationRequest();  // Handle POST for registration
-//     } else if (path === '/M00950516/home') {
-//         if (!loggedIn) {
-//             window.location.href = '/M00950516/login';  // Redirect to login if not logged in
-//         } else {
-//             document.getElementById('homeDiv').style.display = 'block';
-//             loadHomePosts();  // Handle GET for posts
-//         }
-//     } else if (path === '/M00950516/follow') {
-//         if (!loggedIn) {
-//             window.location.href = '/M00950516/login';  // Redirect to login if not logged in
-//         } else {
-//             document.getElementById('followDiv').style.display = 'block';
-//             loadFollowList();  // Handle GET for users to follow
-//         }
-//     } else if (path === '/M00950516/make-post') {
-//         if (!loggedIn) {
-//             window.location.href = '/M00950516/login';  // Redirect to login if not logged in
-//         } else {
-//             document.getElementById('makePostDiv').style.display = 'block';
-//         }
-//     }
-// }
+    // Login function
+    async function loginUser() {
+        const username = inputs.loginUsername.value;
+        const password = inputs.loginPassword.value;
 
-// // Handle Login Form (POST Request)
-// async function handleLoginRequest() {
-//     const loginButton = document.getElementById('loginButton');
-//     loginButton.addEventListener('click', async () => {
-//         const username = document.getElementById('username').value;
-//         const password = document.getElementById('password').value;
-        
-//         const response = await fetch('/M00950516/login', {
-//             method: 'POST',
-//             headers: {
-//                 'Content-Type': 'application/json',
-//             },
-//             body: JSON.stringify({ username, password }),
-//         });
+        // Example API call
+        const response = await fetch("/api/login", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ username, password })
+        });
 
-//         const data = await response.json();
-//         if (data.success) {
-//             window.location.href = '/M00950516/home';  // Redirect to home on successful login
-//         } else {
-//             document.getElementById('message').innerText = data.message;  // Show error message
-//         }
-//     });
-// }
+        if (response.ok) {
+            showModal(modals.home);
+        } else {
+            alert("Login failed!");
+        }
+    }
 
-// // Handle Registration Form (POST Request)
-// async function handleRegistrationRequest() {
-//     const registerButton = document.getElementById('registerButton');
-//     registerButton.addEventListener('click', async () => {
-//         const username = document.getElementById('username').value;
-//         const password = document.getElementById('password').value;
-//         const email = document.getElementById('email').value;
+    // Register function
+    async function registerUser() {
+        const username = inputs.registerUsername.value;
+        const password = inputs.registerPassword.value;
+        const email = inputs.registerEmail.value;
 
-//         const response = await fetch('/M00950516/register', {
-//             method: 'POST',
-//             headers: {
-//                 'Content-Type': 'application/json',
-//             },
-//             body: JSON.stringify({ username, password, email }),
-//         });
+        const response = await fetch("/api/register", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ username, password, email })
+        });
 
-//         const data = await response.json();
-//         if (data.success) {
-//             window.location.href = '/M00950516/login';  // Redirect to login on successful registration
-//         } else {
-//             document.getElementById('message').innerText = data.message;  // Show error message
-//         }
-//     });
-// }
+        if (response.ok) {
+            showModal(modals.login);
+        } else {
+            alert("Registration failed!");
+        }
+    }
 
-// // Handle Loading Home Page Posts (GET Request)
-// async function loadHomePosts() {
-//     const postsList = document.getElementById('postsList');
-//     const response = await fetch('/M00950516/posts');
-//     const posts = await response.json();
-//     postsList.innerHTML = '';  // Clear previous posts
+    // Search function (user or post based on dropdown)
+    async function searchContent() {
+        const query = inputs.search.value;
+        const type = inputs.searchType.value; // "user" or "post"
 
-//     posts.forEach(post => {
-//         const postElement = document.createElement('div');
-//         postElement.classList.add('post');
-//         postElement.innerHTML = `<p>${post.comment}</p><p>by ${post.username}</p>`;
-//         postsList.appendChild(postElement);
-//     });
-// }
+        const response = await fetch(`/api/search?type=${type}&query=${query}`);
+        const data = await response.json();
 
-// // Handle Loading Follow List (GET Request)
-// async function loadFollowList() {
-//     const followList = document.getElementById('followList');
-//     const response = await fetch('/M00950516/follow');
-//     const users = await response.json();
-//     followList.innerHTML = '';  // Clear previous users
+        if (type === "user") {
+            const followList = document.getElementById("followList");
+            followList.innerHTML = data.map(user => `
+                <div>
+                    <span>${user.username}</span>
+                    <button>${user.following ? "Unfollow" : "Follow"}</button>
+                </div>
+            `).join("");
+            showModal(modals.follow);
+        } else if (type === "post") {
+            const postsList = document.getElementById("postsList");
+            postsList.innerHTML = data.map(post => `<p>${post.text}</p>`).join("");
+        }
+    }
 
-//     users.forEach(user => {
-//         const userElement = document.createElement('div');
-//         userElement.classList.add('user');
-//         userElement.innerHTML = `<p>${user.username}</p>`;
-//         followList.appendChild(userElement);
-//     });
-// }
+    // Create post function
+    async function createPost() {
+        const content = inputs.postContent.value;
+        const image = inputs.postImage.files[0];
 
-// // Event listener for DOM content loaded
-// document.addEventListener('DOMContentLoaded', () => {
-//     loadModalBasedOnPath();
-// });
+        const formData = new FormData();
+        formData.append("content", content);
+        if (image) formData.append("image", image);
 
-// // Event listener for history changes (e.g., client-side routing)
-// window.addEventListener('popstate', () => {
-//     loadModalBasedOnPath();
-// });
+        const response = await fetch("/api/posts", {
+            method: "POST",
+            body: formData
+        });
+
+        if (response.ok) {
+            showModal(modals.home);
+        } else {
+            alert("Failed to create post!");
+        }
+    }
+
+    // Initialize
+    showModal(modals.login); // Start with login modal
+});

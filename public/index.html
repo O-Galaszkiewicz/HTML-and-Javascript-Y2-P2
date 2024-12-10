@@ -1,74 +1,87 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Website</title>
+    <title>Social Platform</title>
     <script type="module" src="./js/index.mjs"></script>
     <link rel="stylesheet" href="./css/style.css">
 </head>
+
 <body>
     <!-- Login Modal -->
     <div class="modal" id="loginDiv">
+        <h2 class="text">Login</h2>
         <div>
-            <label class="text" for="username">Username</label>
-            <input class="inputField" id="loginUsername" name="username" type="text" size="32" placeholder="" required>
+            <label class="text" for="loginUsername">Username</label>
+            <input id="loginUsername" type="text" required>
         </div>
         <div>
-            <label class="text" for="password">Password</label>
-            <input class="inputField" id="loginPassword" name="password" type="password" size="32" placeholder="" required>
+            <label class="text" for="loginPassword">Password</label>
+            <input id="loginPassword" type="password" required>
         </div>
-        <button id="loginButton" onclick="">Login</button>
-        <div id="message" class="message"></div>
+        <button class="text" id="loginButton">Login</button>
+        <div id="loginMessage" class="message"></div>
+        <button class="text" id="switchToRegister">Register</button>
     </div>
 
     <!-- Registration Modal -->
-    <div class="modal" id="registrationDiv">
+    <div class="modal hidden" id="registrationDiv">
+        <h2 class="text">Register</h2>
         <div>
-            <label class="text" for="username">Username</label>
-            <input class="inputField" id="registerUsername" name="username" type="text" size="32" placeholder="" required>
+            <label class="text" for="registerUsername">Username</label>
+            <input id="registerUsername" type="text" required>
         </div>
         <div>
-            <label class="text" for="password">Password</label>
-            <input class="inputField" id="registerPassword" name="password" type="password" size="32" placeholder="" required>
+            <label class="text" for="registerPassword">Password</label>
+            <input id="registerPassword" type="password" required>
         </div>
         <div>
-            <label class="text" for="email">Email</label>
-            <input class="inputField" id="email" name="email" type="text" size="32" placeholder="" required>
+            <label class="text" for="registerEmail">Email</label>
+            <input id="registerEmail" type="email" required>
         </div>
-        <button class="button" id="registerButton" onclick="">Register</button>
-        <div class="message" id="message"></div>
+        <button class="text" id="registerButton">Register</button>
+        <div id="registerMessage" class="message"></div>
+        <button class="text" id="switchToLogin">Login</button>
     </div>
 
-    <!-- Home (Contents) Page Modal -->
-    <div class="modal" id="homeDiv">
-        <h2>Welcome to the Contents Page</h2>
+    <!-- Content Modal -->
+    <div class="modal hidden" id="homeDiv">
+        <h2 class="text">Content Page</h2>
+        <div class="search-bar">
+            <select id="searchType">
+                <option class="text" value="user">User</option>
+                <option class="text" value="post">Post</option>
+            </select>
+            <input id="search" type="text" placeholder="Search..." required>
+            <button class="text" id="searchButton">Search</button>
+        </div>
+        <button class="text" id="makePostButton">Make Post</button>
         <div id="postsList"></div>
-        <input class="inputField" id="search" name="search" type="text" placeholder="Search for posts..." required>
-        <button class="button" id="searchButton" onclick="">Search</button>
     </div>
 
     <!-- Follow Modal -->
-    <div class="modal" id="followDiv">
-        <h2>Follow Users</h2>
+    <div class="modal hidden" id="followDiv">
+        <h2 class="text">Follow Users</h2>
         <div id="followList"></div>
-        <input class="inputField" id="searchFollow" name="searchFollow" type="text" placeholder="Search for users to follow..." required>
-        <button class="button" id="searchFollowButton" onclick="">Search</button>
+        <input id="searchFollow" type="text" placeholder="Search for users..." required>
+        <button class="text" id="searchFollowButton">Search</button>
     </div>
 
     <!-- Make Post Modal -->
-    <div class="modal" id="makePostDiv">
+    <div class="modal hidden" id="makePostDiv">
+        <h2 class="text">Create a Post</h2>
         <div>
-            <label class="text" for="comment">Comment</label>
-            <input class="inputField" id="comment" name="comment" type="text" width="32" height="10" placeholder="Write a comment..." required>
+            <label class="text" for="postContent">Comment</label>
+            <textarea id="postContent" rows="3" required></textarea>
         </div>
         <div>
-            <label class="text" for="file">File/Image</label>
-            <input class="inputField" id="file" name="file" type="file" placeholder="Search for file">
+            <label class="text" for="postImage">Upload Image</label>
+            <input id="postImage" type="file" accept="image/*">
         </div>
-        <div>
-            <button class="button" id="postButton" onclick="">Upload</button>
-        </div>
+        <button class="text" id="postButton">Post</button>
     </div>
 </body>
+
 </html>
