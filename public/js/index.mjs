@@ -1,50 +1,40 @@
-document.addEventListener("DOMContentLoaded", () => {
-    const modals = {
-        login: document.getElementById("loginDiv"),
-        register: document.getElementById("registrationDiv"),
-        home: document.getElementById("homeDiv"),
-        follow: document.getElementById("followDiv"),
-        makePost: document.getElementById("makePostDiv")
-    };
+// Select DOM elements
+const loginDiv = document.getElementById("loginDiv");
+const registrationDiv = document.getElementById("registrationDiv");
+const homeDiv = document.getElementById("homeDiv");
+const followDiv = document.getElementById("followDiv");
+const makePostDiv = document.getElementById("makePostDiv");
 
-    const buttons = {
-        switchToRegister: document.getElementById("switchToRegister"),
-        switchToLogin: document.getElementById("switchToLogin"),
-        login: document.getElementById("loginButton"),
-        register: document.getElementById("registerButton"),
-        search: document.getElementById("searchButton"),
-        searchFollow: document.getElementById("searchFollowButton"),
-        makePost: document.getElementById("makePostButton"),
-        post: document.getElementById("postButton")
-    };
+const loginButton = document.getElementById("loginButton");
+const switchToRegister = document.getElementById("switchToRegister");
+const registerButton = document.getElementById("registerButton");
+const switchToLogin = document.getElementById("switchToLogin");
+const makePostButton = document.getElementById("makePostButton");
+const postButton = document.getElementById("postButton");
+const searchButton = document.getElementById("searchButton");
+const searchFollowButton = document.getElementById("searchFollowButton");
 
-    const inputs = {
-        loginUsername: document.getElementById("loginUsername"),
-        loginPassword: document.getElementById("loginPassword"),
-        registerUsername: document.getElementById("registerUsername"),
-        registerPassword: document.getElementById("registerPassword"),
-        registerEmail: document.getElementById("registerEmail"),
-        search: document.getElementById("search"),
-        searchType: document.getElementById("searchType"),
-        postContent: document.getElementById("postContent"),
-        postImage: document.getElementById("postImage")
-    };
+// Helper functions
+const showModal = (modal) => {
+    [loginDiv, registrationDiv, homeDiv, followDiv, makePostDiv].forEach(div => div.classList.add("hidden"));
+    modal.classList.remove("hidden");
+};
 
-    // Show a specific modal
-    const showModal = (modalToShow) => {
-        Object.values(modals).forEach(modal => modal.classList.add("hidden"));
-        modalToShow.classList.remove("hidden");
-    };
+const fetchJSON = async (url, options = {}) => {
+    const response = await fetch(url, options);
+    const data = await response.json();
+    if (!response.ok) {
+        throw new Error(data.message || "Something went wrong");
+    }
+    return data;
+};
 
-    // Event listeners
-    buttons.switchToRegister.addEventListener("click", () => showModal(modals.register));
-    buttons.switchToLogin.addEventListener("click", () => showModal(modals.login));
-    buttons.login.addEventListener("click", loginUser);
-    buttons.register.addEventListener("click", registerUser);
-    buttons.search.addEventListener("click", searchContent);
-    buttons.makePost.addEventListener("click", () => showModal(modals.makePost));
-    buttons.post.addEventListener("click", createPost);
+// Login functionality
+loginButton.addEventListener("click", async () => {
+    const username = document.getElementById("loginUsername").value.trim();
+    const password = document.getElementById("loginPassword").value.trim();
 
+<<<<<<< Updated upstream
     // Login function
     async function loginUser() {
         const username = inputs.loginUsername.value;
@@ -52,42 +42,55 @@ document.addEventListener("DOMContentLoaded", () => {
 
         // Main call
         const response = await fetch("/M00950516/login", {
+=======
+    try {
+        const response = await fetchJSON("/M00950516/login", {
+>>>>>>> Stashed changes
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ username, password })
+            body: JSON.stringify({ username, password }),
         });
-
-        if (response.ok) {
-            showModal(modals.home);
-        } else {
-            alert("Login failed!");
-        }
+        alert(response.message);
+        showModal(homeDiv);
+    } catch (error) {
+        document.getElementById("loginMessage").textContent = error.message;
     }
+});
 
-    // Register function
-    async function registerUser() {
-        const username = inputs.registerUsername.value;
-        const password = inputs.registerPassword.value;
-        const email = inputs.registerEmail.value;
+// Switch to Registration
+switchToRegister.addEventListener("click", () => {
+    showModal(registrationDiv);
+});
 
+<<<<<<< Updated upstream
         const response = await fetch("/M00950516/register", {
+=======
+// Registration functionality
+registerButton.addEventListener("click", async () => {
+    const username = document.getElementById("registerUsername").value.trim();
+    const password = document.getElementById("registerPassword").value.trim();
+    const email = document.getElementById("registerEmail").value.trim();
+
+    try {
+        const response = await fetchJSON("/M00950516/users", {
+>>>>>>> Stashed changes
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ username, password, email })
+            body: JSON.stringify({ username, password, email }),
         });
-
-        if (response.ok) {
-            showModal(modals.login);
-        } else {
-            alert("Registration failed!");
-        }
+        alert(response.message);
+        showModal(loginDiv);
+    } catch (error) {
+        document.getElementById("registerMessage").textContent = error.message;
     }
+});
 
-    // Search function (user or post based on dropdown)
-    async function searchContent() {
-        const query = inputs.search.value;
-        const type = inputs.searchType.value; // "user" or "post"
+// Switch to Login
+switchToLogin.addEventListener("click", () => {
+    showModal(loginDiv);
+});
 
+<<<<<<< Updated upstream
         const response = await fetch(`/M00950516/search?type=${type}&query=${query}`);
         const data = await response.json();
 
@@ -116,17 +119,76 @@ document.addEventListener("DOMContentLoaded", () => {
         if (image) formData.append("image", image);
 
         const response = await fetch("/M00950516/posts", {
+=======
+// Posting content
+postButton.addEventListener("click", async () => {
+    const text = document.getElementById("postContent").value.trim();
+
+    try {
+        const response = await fetchJSON("/M00950516/contents", {
+>>>>>>> Stashed changes
             method: "POST",
-            body: formData
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ text }),
         });
-
-        if (response.ok) {
-            showModal(modals.home);
-        } else {
-            alert("Failed to create post!");
-        }
+        alert(response.message);
+        showModal(homeDiv);
+    } catch (error) {
+        alert(error.message);
     }
-
-    // Initialize
-    showModal(modals.login); // Start with login modal
 });
+
+// Viewing Follow List
+searchFollowButton.addEventListener("click", async () => {
+    const searchQuery = document.getElementById("searchFollow").value.trim();
+
+    try {
+        const response = await fetchJSON(`/M00950516/users/search?q=${encodeURIComponent(searchQuery)}`);
+        const followList = document.getElementById("followList");
+        followList.innerHTML = response.data.map(user => `<div>${user.username}</div>`).join("");
+    } catch (error) {
+        alert(error.message);
+    }
+});
+
+// Search Posts or Users
+searchButton.addEventListener("click", async () => {
+    const searchType = document.getElementById("searchType").value;
+    const searchQuery = document.getElementById("search").value.trim();
+
+    try {
+        const endpoint = searchType === "user" ? "users/search" : "contents/search";
+        const response = await fetchJSON(`/M00950516/${endpoint}?q=${encodeURIComponent(searchQuery)}`);
+        const postsList = document.getElementById("postsList");
+
+        if (searchType === "user") {
+            postsList.innerHTML = response.data.map(user => `<div>${user.username}</div>`).join("");
+        } else {
+            postsList.innerHTML = response.data.map(post => `<div>${post.text} by ${post.username}</div>`).join("");
+        }
+    } catch (error) {
+        alert(error.message);
+    }
+});
+
+// Make a Post
+makePostButton.addEventListener("click", () => {
+    showModal(makePostDiv);
+});
+
+// Initialization: Check login status on page load
+const checkLoginStatus = async () => {
+    try {
+        const response = await fetchJSON("/M00950516/login");
+        if (response.loggedIn) {
+            showModal(homeDiv);
+        } else {
+            showModal(loginDiv);
+        }
+    } catch (error) {
+        console.error("Error checking login status:", error.message);
+        showModal(loginDiv);
+    }
+};
+
+checkLoginStatus();
