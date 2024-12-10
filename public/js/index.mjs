@@ -34,18 +34,8 @@ loginButton.addEventListener("click", async () => {
     const username = document.getElementById("loginUsername").value.trim();
     const password = document.getElementById("loginPassword").value.trim();
 
-<<<<<<< Updated upstream
-    // Login function
-    async function loginUser() {
-        const username = inputs.loginUsername.value;
-        const password = inputs.loginPassword.value;
-
-        // Main call
-        const response = await fetch("/M00950516/login", {
-=======
     try {
         const response = await fetchJSON("/M00950516/login", {
->>>>>>> Stashed changes
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ username, password }),
@@ -62,9 +52,6 @@ switchToRegister.addEventListener("click", () => {
     showModal(registrationDiv);
 });
 
-<<<<<<< Updated upstream
-        const response = await fetch("/M00950516/register", {
-=======
 // Registration functionality
 registerButton.addEventListener("click", async () => {
     const username = document.getElementById("registerUsername").value.trim();
@@ -73,7 +60,6 @@ registerButton.addEventListener("click", async () => {
 
     try {
         const response = await fetchJSON("/M00950516/users", {
->>>>>>> Stashed changes
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ username, password, email }),
@@ -90,43 +76,12 @@ switchToLogin.addEventListener("click", () => {
     showModal(loginDiv);
 });
 
-<<<<<<< Updated upstream
-        const response = await fetch(`/M00950516/search?type=${type}&query=${query}`);
-        const data = await response.json();
-
-        if (type === "user") {
-            const followList = document.getElementById("followList");
-            followList.innerHTML = data.map(user => `
-                <div>
-                    <span>${user.username}</span>
-                    <button>${user.following ? "Unfollow" : "Follow"}</button>
-                </div>
-            `).join("");
-            showModal(modals.follow);
-        } else if (type === "post") {
-            const postsList = document.getElementById("postsList");
-            postsList.innerHTML = data.map(post => `<p>${post.text}</p>`).join("");
-        }
-    }
-
-    // Create post function
-    async function createPost() {
-        const content = inputs.postContent.value;
-        const image = inputs.postImage.files[0];
-
-        const formData = new FormData();
-        formData.append("content", content);
-        if (image) formData.append("image", image);
-
-        const response = await fetch("/M00950516/posts", {
-=======
 // Posting content
 postButton.addEventListener("click", async () => {
     const text = document.getElementById("postContent").value.trim();
 
     try {
         const response = await fetchJSON("/M00950516/contents", {
->>>>>>> Stashed changes
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ text }),
