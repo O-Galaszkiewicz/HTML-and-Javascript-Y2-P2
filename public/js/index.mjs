@@ -50,8 +50,8 @@ document.addEventListener("DOMContentLoaded", () => {
         const username = inputs.loginUsername.value;
         const password = inputs.loginPassword.value;
 
-        // Example API call
-        const response = await fetch("/api/login", {
+        // Main call
+        const response = await fetch("/M00950516/login", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ username, password })
@@ -70,7 +70,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const password = inputs.registerPassword.value;
         const email = inputs.registerEmail.value;
 
-        const response = await fetch("/api/register", {
+        const response = await fetch("/M00950516/register", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ username, password, email })
@@ -88,7 +88,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const query = inputs.search.value;
         const type = inputs.searchType.value; // "user" or "post"
 
-        const response = await fetch(`/api/search?type=${type}&query=${query}`);
+        const response = await fetch(`/M00950516/search?type=${type}&query=${query}`);
         const data = await response.json();
 
         if (type === "user") {
@@ -115,7 +115,7 @@ document.addEventListener("DOMContentLoaded", () => {
         formData.append("content", content);
         if (image) formData.append("image", image);
 
-        const response = await fetch("/api/posts", {
+        const response = await fetch("/M00950516/posts", {
             method: "POST",
             body: formData
         });
