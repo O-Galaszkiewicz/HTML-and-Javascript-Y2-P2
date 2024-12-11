@@ -278,10 +278,21 @@ app.delete(studentID + follow, isAuth, async (req, res) => {
     try {
         const db = req.app.locals.db;
 
-        await db.collection("users").updateOne(
+        // Check if the user to unfollow exists
+        const userToUnfollow = await db.collection("users").findOne({ username: usernameToUnfollow });
+        if (!userToUnfollow) {
+            return handleNotFoundError(res, `User "${usernameToUnfollow}" does not exist.`);
+        }
+
+        // Proceed to remove the user from the current user's follows list
+        const updateResult = await db.collection("users").updateOne(
             { username: currentUser },
             { $pull: { follows: usernameToUnfollow } }
         );
+
+        if (updateResult.modifiedCount === 0) {
+            return handleClientError(res, 400, `You were not following "${usernameToUnfollow}".`);
+        }
 
         handleSuccessOK(res, null, `Unfollowed: ${usernameToUnfollow}.`);
     } catch (err) {
