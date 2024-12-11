@@ -44,7 +44,7 @@ client.connect()
 // Cookie
 app.use(expressSession({
     secret: "cst2120 secret",
-    cookie: { maxAge: 60_000 },
+    cookie: { maxAge: 120_000 },
     resave: false,
     saveUninitialized: true
 }));
