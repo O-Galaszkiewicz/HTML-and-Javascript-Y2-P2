@@ -240,6 +240,22 @@ app.post(studentID + follow,
     }
 );
 
+// Get the followed users of the current logged-in user
+app.get(studentID + follow, isAuth, async (req, res) => {
+    const currentUser = req.session.user.username;
+    try {
+        const db = req.app.locals.db;
+        const user = await db.collection("users").findOne({ username: currentUser });
+        if (!user) {
+            return handleNotFoundError(res, "User not found.");
+        }
+        // Return the list of users the current user follows
+        handleSuccessOK(res, { follows: user.follows }, "Fetched followed users.");
+    } catch (err) {
+        handleServerError(res, err, "Failed to retrieve followed users.");
+    }
+});
+
 // Unfollow a User
 app.delete(studentID + follow, isAuth, async (req, res) => {
     const currentUser = req.session.user.username;
