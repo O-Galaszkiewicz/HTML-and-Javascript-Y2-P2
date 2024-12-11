@@ -188,7 +188,7 @@ async function checkIfFollowed(username) {
         }
 
         const data = await response.json();
-        const follows = data.follows; // List of followed users
+        const follows = data.data.follows; // List of followed users
 
         return follows.includes(username); // Check if the user is in the follows list
     } catch (error) {
