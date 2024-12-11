@@ -87,7 +87,7 @@ postButton.addEventListener("click", async () => {
         console.log(response.message);
         showModal(homeDiv);
     } catch (error) {
-        console.log(error.message);
+        console.error(error.message);
     }
 });
 
@@ -132,11 +132,11 @@ searchButton.addEventListener("click", async () => {
             });
         } else {
             postsList.innerHTML = response.data.map(post =>
-                `<div>${post.text} by ${post.username}</div>`
+                `<div class="text">${post.text} by ${post.username}</div>`
             ).join("");
         }
     } catch (error) {
-        console.log("Error fetching search results:", error.message);
+        console.error("Error fetching search results:", error.message);
     }
 });
 
