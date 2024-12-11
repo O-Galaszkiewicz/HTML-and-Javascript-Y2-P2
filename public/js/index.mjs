@@ -135,17 +135,22 @@ searchButton.addEventListener("click", async () => {
         const postsList = document.getElementById("postsList");
 
         if (searchType === "user") {
-            postsList.innerHTML = response.data.map(user => {
-                const isFollowed = checkIfFollowed(user.username); // Check if the user is followed
-                return `
-                <div class="text">
+            postsList.innerHTML = ""; // Clear the list before rendering
+
+            // Process each user and render their follow/unfollow button asynchronously
+            for (const user of response.data) {
+                const isFollowed = await checkIfFollowed(user.username); // Await the async check
+                const userDiv = document.createElement("div");
+                userDiv.classList.add("text");
+                userDiv.innerHTML = `
                     ${user.username}
                     ${isFollowed
                         ? `<button class="button unfollow-button" data-username="${user.username}">Unfollow</button>`
                         : `<button class="button follow-button" data-username="${user.username}">Follow</button>`
                     }
-                </div>`;
-            }).join("");
+                `;
+                postsList.appendChild(userDiv);
+            }
 
             // Add event listeners for follow and unfollow buttons
             const followButtons = document.querySelectorAll(".follow-button");
@@ -173,28 +178,6 @@ searchButton.addEventListener("click", async () => {
     }
 });
 
-// Function to check if a specific user is followed
-async function checkIfFollowed(username) {
-    try {
-        const response = await fetch(`/M00950516/follow?username=${encodeURIComponent(username)}`, {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json",
-            },
-        });
-
-        if (!response.ok) {
-            throw new Error("Failed to fetch followed user status");
-        }
-
-        const data = await response.json();
-
-        return data.data.isFollowed; // Return true or false
-    } catch (error) {
-        console.error(error);
-        return false; // Assume user is not followed in case of error
-    }
-}
 
 
 // Function to handle following a user
