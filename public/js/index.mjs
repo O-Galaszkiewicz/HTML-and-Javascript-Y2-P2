@@ -178,6 +178,28 @@ searchButton.addEventListener("click", async () => {
     }
 });
 
+// Function to check if a specific user is followed
+async function checkIfFollowed(username) {
+    try {
+        const response = await fetch(`/M00950516/follow?username=${encodeURIComponent(username)}`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+            },
+        });
+
+        if (!response.ok) {
+            throw new Error("Failed to fetch followed user status");
+        }
+
+        const data = await response.json();
+
+        return data.data.isFollowed; // Return true or false
+    } catch (error) {
+        console.error(error);
+        return false; // Assume user is not followed in case of error
+    }
+}
 
 
 // Function to handle following a user
