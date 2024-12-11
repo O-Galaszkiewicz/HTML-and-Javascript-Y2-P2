@@ -281,7 +281,7 @@ app.delete(studentID + follow, isAuth, async (req, res) => {
         // Check if the user to unfollow exists
         const userToUnfollow = await db.collection("users").findOne({ username: usernameToUnfollow });
         if (!userToUnfollow) {
-            return handleNotFoundError(res, `User "${usernameToUnfollow}" does not exist.`);
+            return handleNotFoundError(res, `User ${usernameToUnfollow} does not exist.`);
         }
 
         // Proceed to remove the user from the current user's follows list
@@ -291,7 +291,7 @@ app.delete(studentID + follow, isAuth, async (req, res) => {
         );
 
         if (updateResult.modifiedCount === 0) {
-            return handleClientError(res, 400, `You were not following "${usernameToUnfollow}".`);
+            return handleClientError(res, 400, `You were not following ${usernameToUnfollow}.`);
         }
 
         handleSuccessOK(res, null, `Unfollowed: ${usernameToUnfollow}.`);
