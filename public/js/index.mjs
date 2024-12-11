@@ -107,10 +107,9 @@ searchButton.addEventListener("click", async () => {
                 return `
                 <div class="text">
                     ${user.username}
-                    ${
-                        isFollowed
-                            ? `<button class="button unfollow-button" data-username="${user.username}">Unfollow</button>`
-                            : `<button class="button follow-button" data-username="${user.username}">Follow</button>`
+                    ${isFollowed
+                        ? `<button class="button unfollow-button" data-username="${user.username}">Unfollow</button>`
+                        : `<button class="button follow-button" data-username="${user.username}">Follow</button>`
                     }
                 </div>`;
             }).join("");
@@ -179,7 +178,7 @@ async function handleFollow(usernameToFollow, button) {
         } else {
             const errorData = await followResponse.json();
             console.error(errorData.message);
-            alert(`Error: ${errorData.message}`);
+            console.log(`Error: ${errorData.message}`);
         }
     } catch (error) {
         console.error("Failed to follow user:", error.message);
@@ -210,7 +209,7 @@ async function handleUnfollow(usernameToUnfollow, button) {
         } else {
             const errorData = await unfollowResponse.json();
             console.error(errorData.message);
-            alert(`Error: ${errorData.message}`);
+            console.log(`Error: ${errorData.message}`);
         }
     } catch (error) {
         console.error("Failed to unfollow user:", error.message);
