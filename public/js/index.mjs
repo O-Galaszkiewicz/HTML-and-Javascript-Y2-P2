@@ -3,6 +3,7 @@ const loginDiv = document.getElementById("loginDiv");
 const registrationDiv = document.getElementById("registrationDiv");
 const homeDiv = document.getElementById("homeDiv");
 const makePostDiv = document.getElementById("makePostDiv");
+const postsContainer = document.getElementById("postsList");
 
 const loginButton = document.getElementById("loginButton");
 const switchToRegister = document.getElementById("switchToRegister");
@@ -112,6 +113,7 @@ const getAndDisplayPosts = async () => {
             postElement.innerHTML = `
                 <h3>${post.username}</h3>
                 <p>${post.text}</p>
+                ${post.image ? `<img src="/uploads/${post.image}" alt="Post image">` : ""}
                 <small>${new Date(post.createdAt).toLocaleString()}</small>
             `;
             postsContainer.appendChild(postElement);

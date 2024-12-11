@@ -3,6 +3,9 @@ import expressSession from "express-session";
 import { body, query, validationResult } from "express-validator";
 import bodyParser from "body-parser";
 import { MongoClient, ObjectId } from "mongodb";
+import multer from "multer";
+import path from "path";
+import { v4: uuidv4 } from "uuid";
 import { hashPassword, comparePassword } from "./backend/bcryptUtils.mjs";
 import {
     handleClientError,
@@ -57,7 +60,21 @@ const isAuth = (req, res, next) => {
     }
 };
 
+// Multer for file uploads
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, "uploads"); // Save files in the "uploads" folder
+    },
+    filename: (req, file, cb) => {
+        const uniqueName = `${uuidv4()}${path.extname(file.originalname)}`;
+        cb(null, uniqueName); // Use UUID as the filename
+    },
+});
+
+const upload = multer({ storage });
+
 app.use(express.static("public"));
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 // Registration Route
 app.post(studentID + users,
@@ -157,27 +174,33 @@ app.delete(studentID + login, isAuth, (req, res) => {
 });
 
 // Post Routes
-app.post(studentID + contents, isAuth, async (req, res) => {
+app.post(studentID + contents, upload.single("image"), async (req, res) => {
     const username = req.session.user.username;
     const { text } = req.body;
 
     if (!text) {
-        return handleClientError(res, 400, "Content is required.");
+        return res.status(400).json({ error: "Content is required." });
     }
 
     try {
         const db = req.app.locals.db;
+
         const post = {
             username,
             text,
+            image: req.file ? req.file.filename : null, // Save the filename to the database
             createdAt: new Date(),
         };
 
         const result = await db.collection("posts").insertOne(post);
 
-        handleSuccessCreated(res, { id: result.insertedId, username, text }, "Content posted successfully!");
+        res.status(201).json({
+            message: "Content posted successfully!",
+            data: { id: result.insertedId, username, text, image: post.image },
+        });
     } catch (err) {
-        handleServerError(res, err, "Failed to post content. Please try again.");
+        console.error(err);
+        res.status(500).json({ error: "Failed to post content. Please try again." });
     }
 });
 

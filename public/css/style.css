@@ -112,27 +112,12 @@ input:focus {
 
 #postsList {
     list-style-type: none;
-    padding: 0;
-    margin: 0;
-}
-
-.post-item {
-    border: 1px solid #ccc;
     padding: 10px;
-    margin: 10px 0;
-    border-radius: 5px;
-    background-color: #f9f9f9;
+    margin: 10px;
+    border: 1px solid #444;
+    border-radius: 4px;
 }
 
-.post-header {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 5px;
-    font-size: 0.9em;
-    color: #555;
-}
-
-.post-content {
-    font-size: 1em;
-    color: #333;
+h3 {
+    margin-block: 0;
 }
