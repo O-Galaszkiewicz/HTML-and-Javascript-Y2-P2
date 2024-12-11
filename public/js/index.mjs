@@ -102,45 +102,33 @@ searchButton.addEventListener("click", async () => {
         const postsList = document.getElementById("postsList");
 
         if (searchType === "user") {
-            postsList.innerHTML = response.data.map(user =>
-                `<div class="text">
+            postsList.innerHTML = response.data.map(user => {
+                const isFollowed = checkIfFollowed(user.username); // Check if the user is followed
+                return `
+                <div class="text">
                     ${user.username}
-                    <button class="button follow-button" data-username="${user.username}">
-                        Follow
-                    </button>
-                </div>`
-            ).join("");
+                    ${
+                        isFollowed
+                            ? `<button class="button unfollow-button" data-username="${user.username}">Unfollow</button>`
+                            : `<button class="button follow-button" data-username="${user.username}">Follow</button>`
+                    }
+                </div>`;
+            }).join("");
 
-            // Add event listeners to follow buttons
+            // Add event listeners for follow and unfollow buttons
             const followButtons = document.querySelectorAll(".follow-button");
             followButtons.forEach(button => {
                 button.addEventListener("click", async () => {
                     const usernameToFollow = button.getAttribute("data-username");
+                    await handleFollow(usernameToFollow, button);
+                });
+            });
 
-                    try {
-                        const followResponse = await fetch(`/M00950516/follow`, {
-                            method: "POST",
-                            headers: {
-                                "Content-Type": "application/json"
-                            },
-                            body: JSON.stringify({ usernameToFollow })
-                        });
-
-                        if (followResponse.ok) {
-                            const followData = await followResponse.json();
-                            console.log(followData.message);
-
-                            // Update button text or behavior if needed
-                            button.textContent = "Following";
-                            button.disabled = true; // Prevent duplicate follow requests
-                        } else {
-                            const errorData = await followResponse.json();
-                            console.error(errorData.message);
-                            alert(`Error: ${errorData.message}`);
-                        }
-                    } catch (error) {
-                        console.error("Failed to follow user:", error.message);
-                    }
+            const unfollowButtons = document.querySelectorAll(".unfollow-button");
+            unfollowButtons.forEach(button => {
+                button.addEventListener("click", async () => {
+                    const usernameToUnfollow = button.getAttribute("data-username");
+                    await handleUnfollow(usernameToUnfollow, button);
                 });
             });
         } else {
@@ -152,6 +140,82 @@ searchButton.addEventListener("click", async () => {
         console.log("Error fetching search results:", error.message);
     }
 });
+
+// Function to check if a user is followed
+function checkIfFollowed(username) {
+    // This should check against the current user's follows array
+    // For simplicity, simulate the follows array for now
+    const follows = getCurrentUserFollows(); // Replace this with your actual backend call if needed
+    return follows.includes(username);
+}
+
+// Simulated function to get the current user's follows array
+function getCurrentUserFollows() {
+    // Replace with a backend request if needed
+    return ["UserB", "UserC"]; // Example: user already follows "UserB" and "UserC"
+}
+
+// Function to handle following a user
+async function handleFollow(usernameToFollow, button) {
+    try {
+        const followResponse = await fetch(`/M00950516/follow`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ usernameToFollow })
+        });
+
+        if (followResponse.ok) {
+            const followData = await followResponse.json();
+            console.log(followData.message);
+
+            // Replace the Follow button with the Unfollow button
+            button.outerHTML = `<button class="button unfollow-button" data-username="${usernameToFollow}">Unfollow</button>`;
+            const newUnfollowButton = document.querySelector(`.unfollow-button[data-username="${usernameToFollow}"]`);
+            newUnfollowButton.addEventListener("click", async () => {
+                await handleUnfollow(usernameToFollow, newUnfollowButton);
+            });
+        } else {
+            const errorData = await followResponse.json();
+            console.error(errorData.message);
+            alert(`Error: ${errorData.message}`);
+        }
+    } catch (error) {
+        console.error("Failed to follow user:", error.message);
+    }
+}
+
+// Function to handle unfollowing a user
+async function handleUnfollow(usernameToUnfollow, button) {
+    try {
+        const unfollowResponse = await fetch(`/M00950516/follow`, {
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ usernameToUnfollow })
+        });
+
+        if (unfollowResponse.ok) {
+            const unfollowData = await unfollowResponse.json();
+            console.log(unfollowData.message);
+
+            // Replace the Unfollow button with the Follow button
+            button.outerHTML = `<button class="button follow-button" data-username="${usernameToUnfollow}">Follow</button>`;
+            const newFollowButton = document.querySelector(`.follow-button[data-username="${usernameToUnfollow}"]`);
+            newFollowButton.addEventListener("click", async () => {
+                await handleFollow(usernameToUnfollow, newFollowButton);
+            });
+        } else {
+            const errorData = await unfollowResponse.json();
+            console.error(errorData.message);
+            alert(`Error: ${errorData.message}`);
+        }
+    } catch (error) {
+        console.error("Failed to unfollow user:", error.message);
+    }
+}
 
 // Make a Post
 makePostButton.addEventListener("click", () => {
