@@ -3,6 +3,7 @@ const loginDiv = document.getElementById("loginDiv");
 const registrationDiv = document.getElementById("registrationDiv");
 const homeDiv = document.getElementById("homeDiv");
 const makePostDiv = document.getElementById("makePostDiv");
+const postsContainer = document.getElementById("postsList");
 
 const loginButton = document.getElementById("loginButton");
 const switchToRegister = document.getElementById("switchToRegister");
