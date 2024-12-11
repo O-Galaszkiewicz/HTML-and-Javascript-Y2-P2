@@ -143,35 +143,24 @@ searchButton.addEventListener("click", async () => {
 // Function to check if a user is followed
 async function checkIfFollowed(username) {
     try {
-        // Get the current user's follows from the backend
-        const follows = await getCurrentUserFollows();
-        return follows.includes(username);
-    } catch (error) {
-        console.error("Error checking if user is followed:", error);
-        return false; // Assume not followed on error
-    }
-}
-
-// Function to get the current user's follows array
-async function getCurrentUserFollows() {
-    try {
-        // Example backend call to fetch follows (adjust endpoint/method as necessary)
-        const response = await fetch("/M00950516/follows", {
-            method: "GET",
+        const response = await fetch('/M00950516/follow', {
+            method: 'GET',
             headers: {
-                "Content-Type": "application/json",
-            },
+                'Content-Type': 'application/json',
+            }
         });
 
         if (!response.ok) {
-            throw new Error("Failed to fetch follows");
+            throw new Error('Failed to fetch followed users');
         }
 
         const data = await response.json();
-        return data.follows;
+        const follows = data.follows; // List of followed users
+
+        return follows.includes(username); // Check if the user is in the follows list
     } catch (error) {
-        console.error("Error fetching follows:", error);
-        return []; // Return an empty array on error
+        console.error(error);
+        return false; // In case of error, assume user is not followed
     }
 }
 
