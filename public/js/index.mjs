@@ -16,6 +16,10 @@ const searchButton = document.getElementById("searchButton");
 const showModal = (modal) => {
     [loginDiv, registrationDiv, homeDiv, makePostDiv].forEach(div => div.classList.add("hidden"));
     modal.classList.remove("hidden");
+
+    if (modal === homeDiv) {
+        getAndDisplayPosts();
+    }
 };
 
 const fetchJSON = async (url, options = {}) => {
@@ -90,6 +94,33 @@ postButton.addEventListener("click", async () => {
         console.error(error.message);
     }
 });
+
+// Function to get posts and display them
+const getAndDisplayPosts = async () => {
+    try {
+        const response = await fetchJSON("/M00950516/contents"); // Fetch posts from the server
+        postsContainer.innerHTML = ""; // Clear existing posts
+
+        if (response.data.length === 0) {
+            postsContainer.innerHTML = "<p>No posts available.</p>";
+            return;
+        }
+
+        response.data.forEach(post => {
+            const postElement = document.createElement("div");
+            postElement.classList.add("post");
+            postElement.innerHTML = `
+                <h3>${post.username}</h3>
+                <p>${post.text}</p>
+                <small>${new Date(post.createdAt).toLocaleString()}</small>
+            `;
+            postsContainer.appendChild(postElement);
+        });
+    } catch (error) {
+        console.error("Failed to fetch posts:", error.message);
+        postsContainer.innerHTML = "<p>Error loading posts.</p>";
+    }
+};
 
 // Search Posts or Users
 searchButton.addEventListener("click", async () => {
