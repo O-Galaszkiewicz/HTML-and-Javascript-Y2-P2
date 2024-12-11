@@ -102,59 +102,54 @@ searchButton.addEventListener("click", async () => {
         const postsList = document.getElementById("postsList");
 
         if (searchType === "user") {
-            // Assuming `response.data` contains a list of users
-            postsList.innerHTML = response.data.map(user => {
-                const isFollowing = user.follows.includes(user.username);
-                return `
-                    <div class="text">
-                        ${user.username}
-                        <button class="button follow-button" data-username="${user.username}">
-                            ${isFollowing ? "Unfollow" : "Follow"}
-                        </button>
-                    </div>`;
-            }).join("");
+            postsList.innerHTML = response.data.map(user =>
+                `<div class="text">
+                    ${user.username}
+                    <button class="button follow-button" data-username="${user.username}">
+                        Follow
+                    </button>
+                </div>`
+            ).join("");
 
-            // Add event listeners to all Follow/Unfollow buttons
+            // Add event listeners to follow buttons
             const followButtons = document.querySelectorAll(".follow-button");
             followButtons.forEach(button => {
-                button.addEventListener("click", async (event) => {
-                    const targetUser = event.target.getAttribute("data-username");
-                    const isFollowing = event.target.textContent === "Unfollow";
+                button.addEventListener("click", async () => {
+                    const usernameToFollow = button.getAttribute("data-username");
 
                     try {
-                        // Make the API request based on the current state
-                        const method = isFollowing ? "DELETE" : "POST";
-                        const url = `/M00950516/follow`;
-
-                        // Send follow/unfollow request
-                        const response = await fetch(url, {
-                            method: method,
-                            headers: { "Content-Type": "application/json" },
-                            body: JSON.stringify({
-                                [isFollowing ? "usernameToUnfollow" : "usernameToFollow"]: targetUser
-                            })
+                        const followResponse = await fetch(`/M00950516/follow`, {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json"
+                            },
+                            body: JSON.stringify({ usernameToFollow })
                         });
 
-                        const data = await response.json();
-                        if (response.ok) {
-                            // Toggle the button text between "Follow" and "Unfollow"
-                            event.target.textContent = isFollowing ? "Follow" : "Unfollow";
-                            console.log(data.message); // Optionally log the response message
+                        if (followResponse.ok) {
+                            const followData = await followResponse.json();
+                            console.log(followData.message);
+
+                            // Update button text or behavior if needed
+                            button.textContent = "Following";
+                            button.disabled = true; // Prevent duplicate follow requests
                         } else {
-                            console.error(data.message); // Optionally log errors
+                            const errorData = await followResponse.json();
+                            console.error(errorData.message);
+                            alert(`Error: ${errorData.message}`);
                         }
                     } catch (error) {
-                        console.error("Error during follow/unfollow:", error.message);
+                        console.error("Failed to follow user:", error.message);
                     }
                 });
             });
-
         } else {
             postsList.innerHTML = response.data.map(post =>
-                `<div>${post.text} by ${post.username}</div>`).join("");
+                `<div>${post.text} by ${post.username}</div>`
+            ).join("");
         }
     } catch (error) {
-        console.log(error.message);
+        console.log("Error fetching search results:", error.message);
     }
 });
 
