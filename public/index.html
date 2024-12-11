@@ -15,11 +15,11 @@
         <h2 class="text">Login</h2>
         <div>
             <label class="text" for="loginUsername">Username</label>
-            <input class="text" id="loginUsername" type="text" required>
+            <input class="text" id="loginUsername" type="text" size="20" required>
         </div>
         <div>
             <label class="text" for="loginPassword">Password</label>
-            <input class="text" id="loginPassword" type="password" required>
+            <input class="text" id="loginPassword" type="password" size="20" required>
         </div>
         <div id="loginMessage" class="text"></div>
         <button class="text" id="loginButton">Login</button>
@@ -31,15 +31,15 @@
         <h2 class="text">Register</h2>
         <div>
             <label class="text" for="registerUsername">Username</label>
-            <input class="text" id="registerUsername" type="text" required>
+            <input class="text" id="registerUsername" type="text" size="20" required>
         </div>
         <div>
             <label class="text" for="registerPassword">Password</label>
-            <input class="text" id="registerPassword" type="password" required>
+            <input class="text" id="registerPassword" type="password" size="20" required>
         </div>
         <div>
             <label class="text" for="registerEmail">Email</label>
-            <input class="text" id="registerEmail" type="email" required>
+            <input class="text" id="registerEmail" type="email" size="20" required>
         </div>
         <div id="registerMessage" class="text"></div>
         <button class="text" id="registerButton">Register</button>
@@ -50,27 +50,19 @@
     <div class="full-page" id="homeDiv">
         <header class="content-header">
             <h2 class="text">Contents</h2>
-            <div class="search-bar">
-                <select class="text" id="searchType">
-                    <option value="user">User</option>
-                    <option value="post">Post</option>
-                </select>
-                <input class="text" id="search" type="text" placeholder="Search..." required>
-                <button class="text" id="searchButton">Search</button>
-            </div>
-            <button class="text" id="makePostButton">Make Post</button>
         </header>
+        <div class="search-bar">
+            <select class="text" id="searchType">
+                <option value="user">User</option>
+                <option value="post">Post</option>
+            </select>
+            <input class="text" id="search" type="text" placeholder="Search..." size="32" required>
+            <button class="text" id="searchButton">Search</button>
+        </div>
+        <button class="text" id="makePostButton">Make Post</button>
         <div class="posts-area">
             <div id="postsList"></div>
         </div>
-    </div>
-
-    <!-- Follow Modal -->
-    <div class="modal" id="followDiv">
-        <h2 class="text">Follow Users</h2>
-        <div id="followList"></div>
-        <input class="text" id="searchFollow" type="text" placeholder="Search for users..." required>
-        <button class="text" id="searchFollowButton">Search</button>
     </div>
 
     <!-- Make Post Modal -->
@@ -78,11 +70,15 @@
         <h2 class="text">Create a Post</h2>
         <div>
             <label class="text" for="postContent">Comment</label>
-            <textarea class="text" id="postContent" rows="3" required></textarea>
+            <div>
+                <textarea class="text" id="postContent" rows="3" size="20" required></textarea>
+            </div>
         </div>
         <div>
             <label class="text" for="postImage">Upload Image</label>
-            <input class="text" id="postImage" type="file" accept="image/*">
+            <div>
+                <input class="text" id="postImage" type="file" accept="image/*">
+            </div>
         </div>
         <button class="text" id="postButton">Post</button>
         <button class="text close-modal" id="closePostModal">Close</button>

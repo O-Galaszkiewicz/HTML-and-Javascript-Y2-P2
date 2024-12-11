@@ -135,6 +135,7 @@ makePostButton.addEventListener("click", () => {
 const closePostModal = document.getElementById("closePostModal");
 closePostModal.addEventListener("click", () => {
     makePostDiv.classList.add("hidden");
+    homeDiv.classList.remove("hidden")
 });
 
 // Initialization: Check login status on page load

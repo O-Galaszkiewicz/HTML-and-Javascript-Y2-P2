@@ -1,19 +1,27 @@
 body {
     background: #2f3136;
     font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
 }
 
 .modal {
-    display: block;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
     background: #26272b9d;
-    border: 1px solid #000;
+    border: 1px solid #444;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    padding: 15px;
+    padding: 20px;
     border-radius: 8px;
-}
-
-.modal.hidden {
-    display: none !important;
+    min-width: 300px;
+    max-width: 500px;
+    text-align: center;
 }
 
 .modal h2 {
@@ -21,28 +29,32 @@ body {
     color: #ffd700;
 }
 
-.modal input,
-.modal textarea,
-.modal button,
-.modal select {
-    display: block;
+.hidden {
+    display: none !important;
+}
+
+input,
+textarea,
+select,
+button {
     margin: 10px 0;
     background: #00000000;
     color: #ffd700;
     border: 1px solid #444;
     padding: 8px;
     border-radius: 4px;
+    font-size: 14px;
+}
+
+textarea {
+    width: 200px;
+    height: 60px;
 }
 
 button {
-    display: block;
-    margin: 10px 0;
-    background: #00000000;
-    color: #ffd700;
+    width: 252.703px;
+    background-size: 15px auto;
     cursor: pointer;
-    border: 1px solid #444;
-    padding: 8px;
-    border-radius: 4px;
     transition: background-color 0.3s ease;
 }
 
@@ -50,34 +62,59 @@ button:hover {
     background-color: #555;
 }
 
+textarea:focus,
+select:focus,
+input:focus {
+    background: #00000000;
+    border-color: #ffd700;
+    outline: none;
+}
+
 .text {
     color: #ffd700;
     padding: 5px;
 }
 
-.content-page {
+.full-page {
     padding: 20px;
-    background: #1e1f23;
-    color: #fff;
-    border: 1px solid #000;
+    background: #26272b9d;
+    border: 1px solid #444;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     margin: 20px auto;
     max-width: 800px;
 }
 
-.content-page h1 {
-    color: #ffd700;
-    margin-bottom: 20px;
-    text-align: center;
+.content-header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 50px;
 }
 
-.content-page p {
-    margin: 10px 0;
-    line-height: 1.6;
+.content-header.text {
+    font-size: 14px;
+    font-weight: bold;
 }
 
-.content-page .content-item {
+.search-bar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+#makePostButton {
+    display: block;
+    margin: 20px auto;
+}
+
+/* Untested Code */
+
+.posts-area {
+    margin-top: 20px;
+}
+
+.posts-area .content-item {
     background: #26272b;
     border: 1px solid #000;
     margin: 15px 0;
@@ -85,25 +122,26 @@ button:hover {
     border-radius: 4px;
 }
 
-.content-page .content-item h3 {
+.posts-area .content-item h3 {
     color: #ffd700;
     margin: 0;
 }
 
-.content-page .content-item p {
+.posts-area .content-item p {
     color: #fff;
     margin: 5px 0;
 }
 
-.content-page .actions {
+.posts-area .actions {
     margin-top: 10px;
+    display: flex;
+    gap: 10px;
 }
 
-.content-page .actions button {
-    margin-right: 10px;
+.posts-area .actions button {
     background-color: #333;
 }
 
-.content-page .actions button:hover {
+.posts-area .actions button:hover {
     background-color: #444;
 }
