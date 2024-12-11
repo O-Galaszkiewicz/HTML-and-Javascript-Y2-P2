@@ -11,7 +11,6 @@ const switchToLogin = document.getElementById("switchToLogin");
 const makePostButton = document.getElementById("makePostButton");
 const postButton = document.getElementById("postButton");
 const searchButton = document.getElementById("searchButton");
-const searchFollowButton = document.getElementById("searchFollowButton");
 
 // Show a specific modal
 const showModal = (modal) => {
@@ -103,10 +102,53 @@ searchButton.addEventListener("click", async () => {
         const postsList = document.getElementById("postsList");
 
         if (searchType === "user") {
-            postsList.innerHTML = response.data.map(user =>
-                `<div class="text">${user.username}
-                <button class="button" id="followButton" data-username="User">Follow/Unfollow</button>
-                </div>`).join("");
+            // Assuming `response.data` contains a list of users
+            postsList.innerHTML = response.data.map(user => {
+                const isFollowing = user.follows.includes(user.username);
+                return `
+                    <div class="text">
+                        ${user.username}
+                        <button class="button follow-button" data-username="${user.username}">
+                            ${isFollowing ? "Unfollow" : "Follow"}
+                        </button>
+                    </div>`;
+            }).join("");
+
+            // Add event listeners to all Follow/Unfollow buttons
+            const followButtons = document.querySelectorAll(".follow-button");
+            followButtons.forEach(button => {
+                button.addEventListener("click", async (event) => {
+                    const targetUser = event.target.getAttribute("data-username");
+                    const isFollowing = event.target.textContent === "Unfollow";
+
+                    try {
+                        // Make the API request based on the current state
+                        const method = isFollowing ? "DELETE" : "POST";
+                        const url = `/M00950516/follow`;
+
+                        // Send follow/unfollow request
+                        const response = await fetch(url, {
+                            method: method,
+                            headers: { "Content-Type": "application/json" },
+                            body: JSON.stringify({
+                                [isFollowing ? "usernameToUnfollow" : "usernameToFollow"]: targetUser
+                            })
+                        });
+
+                        const data = await response.json();
+                        if (response.ok) {
+                            // Toggle the button text between "Follow" and "Unfollow"
+                            event.target.textContent = isFollowing ? "Follow" : "Unfollow";
+                            console.log(data.message); // Optionally log the response message
+                        } else {
+                            console.error(data.message); // Optionally log errors
+                        }
+                    } catch (error) {
+                        console.error("Error during follow/unfollow:", error.message);
+                    }
+                });
+            });
+
         } else {
             postsList.innerHTML = response.data.map(post =>
                 `<div>${post.text} by ${post.username}</div>`).join("");
