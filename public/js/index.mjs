@@ -2,7 +2,6 @@
 const loginDiv = document.getElementById("loginDiv");
 const registrationDiv = document.getElementById("registrationDiv");
 const homeDiv = document.getElementById("homeDiv");
-const followDiv = document.getElementById("followDiv");
 const makePostDiv = document.getElementById("makePostDiv");
 
 const loginButton = document.getElementById("loginButton");
@@ -16,7 +15,7 @@ const searchFollowButton = document.getElementById("searchFollowButton");
 
 // Show a specific modal
 const showModal = (modal) => {
-    [loginDiv, registrationDiv, homeDiv, followDiv, makePostDiv].forEach(div => div.classList.add("hidden"));
+    [loginDiv, registrationDiv, homeDiv, makePostDiv].forEach(div => div.classList.add("hidden"));
     modal.classList.remove("hidden");
 };
 
@@ -93,18 +92,18 @@ postButton.addEventListener("click", async () => {
     }
 });
 
-// Viewing Follow List
-searchFollowButton.addEventListener("click", async () => {
-    const searchQuery = document.getElementById("searchFollow").value.trim();
+// // Viewing Follow List
+// searchFollowButton.addEventListener("click", async () => {
+//     const searchQuery = document.getElementById("searchFollow").value.trim();
 
-    try {
-        const response = await fetchJSON(`/M00950516/users/search?q=${encodeURIComponent(searchQuery)}`);
-        const followList = document.getElementById("followList");
-        followList.innerHTML = response.data.map(user => `<div>${user.username}</div>`).join("");
-    } catch (error) {
-        console.log(error.message);
-    }
-});
+//     try {
+//         const response = await fetchJSON(`/M00950516/users/search?q=${encodeURIComponent(searchQuery)}`);
+//         const followList = document.getElementById("followList");
+//         followList.innerHTML = response.data.map(user => `<div>${user.username}</div>`).join("");
+//     } catch (error) {
+//         console.log(error.message);
+//     }
+// });
 
 // Search Posts or Users
 searchButton.addEventListener("click", async () => {
@@ -117,9 +116,9 @@ searchButton.addEventListener("click", async () => {
         const postsList = document.getElementById("postsList");
 
         if (searchType === "user") {
-            postsList.innerHTML = response.data.map(user => `<div>${user.username}</div>`).join("");
+            postsList.innerHTML = response.data.map(user => `<div class="text">${user.username}</div>`).join("");
         } else {
-            postsList.innerHTML = response.data.map(post => `<div>${post.text} by ${post.username}</div>`).join("");
+            postsList.innerHTML = response.data.map(post => `<div class="text">${post.text} by ${post.username}</div>`).join("");
         }
     } catch (error) {
         console.log(error.message);
