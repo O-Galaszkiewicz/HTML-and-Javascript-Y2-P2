@@ -176,15 +176,15 @@ searchButton.addEventListener("click", async () => {
 // Function to check if a user is followed
 async function checkIfFollowed(username) {
     try {
-        const response = await fetch('/M00950516/follow', {
-            method: 'GET',
+        const response = await fetch("/M00950516/follow", {
+            method: "GET",
             headers: {
-                'Content-Type': 'application/json',
+                "Content-Type": "application/json",
             }
         });
 
         if (!response.ok) {
-            throw new Error('Failed to fetch followed users');
+            throw new Error("Failed to fetch followed users");
         }
 
         const data = await response.json();
