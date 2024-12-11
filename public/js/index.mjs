@@ -1,3 +1,4 @@
+// Select DOM elements
 const loginDiv = document.getElementById("loginDiv");
 const registrationDiv = document.getElementById("registrationDiv");
 const homeDiv = document.getElementById("homeDiv");
@@ -10,6 +11,7 @@ const switchToLogin = document.getElementById("switchToLogin");
 const makePostButton = document.getElementById("makePostButton");
 const postButton = document.getElementById("postButton");
 const searchButton = document.getElementById("searchButton");
+const searchFollowButton = document.getElementById("searchFollowButton");
 
 // Show a specific modal
 const showModal = (modal) => {
@@ -97,56 +99,17 @@ searchButton.addEventListener("click", async () => {
 
     try {
         const endpoint = searchType === "user" ? "users/search" : "contents/search";
-        const response = await fetchJSON(`/M00950516/${endpoint}?q=${searchQuery}`);
+        const response = await fetchJSON(`/M00950516/${endpoint}?q=${encodeURIComponent(searchQuery)}`);
         const postsList = document.getElementById("postsList");
 
         if (searchType === "user") {
-            postsList.innerHTML = response.data.map(user => {
-                const isFollowing = response.loggedInUser.follows.includes(user.username);
-                return `
-                    <div class="text">
-                        ${user.username}
-                        <button class="button" id="followButton" data-username="${user.username}">
-                            ${isFollowing ? "Unfollow" : "Follow"}
-                        </button>
-                    </div>`;
-            }).join("");
-
-            // Attach event listeners to the Follow/Unfollow buttons
-            const followButtons = document.querySelectorAll("#followButton");
-            followButtons.forEach(button => {
-                button.addEventListener("click", async (event) => {
-                    const targetUser = event.target.getAttribute("data-username");
-                    const isFollowing = event.target.textContent === "Unfollow";
-                    
-                    try {
-                        // Send a follow/unfollow request to the backend
-                        const action = isFollowing ? "unfollow" : "follow";
-                        const method = action === "unfollow" ? "DELETE" : "POST";
-                        const body = action === "unfollow" ? { usernameToUnfollow: targetUser } : { usernameToFollow: targetUser };
-
-                        const response = await fetch("/M00950516/follow", {
-                            method,
-                            headers: { "Content-Type": "application/json" },
-                            body: JSON.stringify(body)
-                        });
-
-                        const data = await response.json();
-                        if (response.ok) {
-                            // Update the button text after the action
-                            event.target.textContent = isFollowing ? "Follow" : "Unfollow";
-                            console.log(data.message);
-                        } else {
-                            console.error(data.message);
-                        }
-                    } catch (error) {
-                        console.error("Error during follow/unfollow:", error.message);
-                    }
-                });
-            });
-
+            postsList.innerHTML = response.data.map(user =>
+                `<div class="text">${user.username}
+                <button class="button" id="followButton" data-username="User">Follow/Unfollow</button>
+                </div>`).join("");
         } else {
-            postsList.innerHTML = response.data.map(post => `<div class="text">${post.text} by ${post.username}</div>`).join("");
+            postsList.innerHTML = response.data.map(post =>
+                `<div>${post.text} by ${post.username}</div>`).join("");
         }
     } catch (error) {
         console.log(error.message);

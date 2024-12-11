@@ -61,7 +61,7 @@ app.use(express.static("public"));
 
 // Registration Route
 app.post(studentID + users,
-    body("username").isAlphanumeric().withMessage("Username must be alphanumeric."),
+    body("username").notEmpty().withMessage("Username must be filled."),
     body("password").isLength({ min: 6 }).withMessage("Password must be at least 6 characters."),
     body("email").isEmail().withMessage("Invalid email address."),
     async (req, res) => {
