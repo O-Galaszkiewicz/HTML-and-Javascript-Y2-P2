@@ -69,8 +69,8 @@ registerButton.addEventListener("click", async () => {
         });
         console.log(response.message);
         showModal(loginDiv);
-    } catch (error) {
-        document.getElementById("registerMessage").textContent = error.message;
+    } catch (err) {
+        document.getElementById("registerMessage").textContent = err.message;
     }
 });
 
@@ -91,8 +91,8 @@ postButton.addEventListener("click", async () => {
         });
         console.log(response.message);
         showModal(homeDiv);
-    } catch (error) {
-        console.error(error.message);
+    } catch (err) {
+        console.error(err.message);
     }
 });
 
@@ -118,8 +118,8 @@ const getAndDisplayPosts = async () => {
             `;
             postsContainer.appendChild(postElement);
         });
-    } catch (error) {
-        console.error("Failed to fetch posts:", error.message);
+    } catch (err) {
+        console.error("Failed to fetch posts:", err.message);
         postsContainer.innerHTML = "<p>Error loading posts.</p>";
     }
 };
@@ -173,8 +173,8 @@ searchButton.addEventListener("click", async () => {
                 `<div class="text">${post.text} by ${post.username}</div>`
             ).join("");
         }
-    } catch (error) {
-        console.error("Error fetching search results:", error.message);
+    } catch (err) {
+        console.error("Error fetching search results:", err.message);
     }
 });
 
@@ -195,8 +195,8 @@ async function checkIfFollowed(username) {
         const data = await response.json();
 
         return data.data.isFollowed; // Return true or false
-    } catch (error) {
-        console.error(error);
+    } catch (err) {
+        console.error(err);
         return false; // Assume user is not followed in case of error
     }
 }
@@ -228,8 +228,8 @@ async function handleFollow(usernameToFollow, button) {
             console.error(errorData.message);
             console.log(`Error: ${errorData.message}`);
         }
-    } catch (error) {
-        console.error("Failed to follow user:", error.message);
+    } catch (err) {
+        console.error("Failed to follow user:", err.message);
     }
 }
 
@@ -259,8 +259,8 @@ async function handleUnfollow(usernameToUnfollow, button) {
             console.error(errorData.message);
             console.log(`Error: ${errorData.message}`);
         }
-    } catch (error) {
-        console.error("Failed to unfollow user:", error.message);
+    } catch (err) {
+        console.error("Failed to unfollow user:", err.message);
     }
 }
 
@@ -285,8 +285,8 @@ const checkLoginStatus = async () => {
         } else {
             showModal(loginDiv);
         }
-    } catch (error) {
-        console.error("Error checking login status:", error.message);
+    } catch (err) {
+        console.error("Error checking login status:", err.message);
         showModal(loginDiv);
     }
 };
