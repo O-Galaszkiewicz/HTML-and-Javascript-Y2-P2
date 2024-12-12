@@ -53,6 +53,7 @@ loginButton.addEventListener("click", async () => {
 // Switch to Registration
 switchToRegister.addEventListener("click", () => {
     showModal(registrationDiv);
+    document.getElementById("loginMessage").textContent = "";
 });
 
 // Registration functionality
@@ -77,6 +78,7 @@ registerButton.addEventListener("click", async () => {
 // Switch to Login
 switchToLogin.addEventListener("click", () => {
     showModal(loginDiv);
+    document.getElementById("registerMessage").textContent = "";
 });
 
 // Posting content
@@ -113,7 +115,6 @@ const getAndDisplayPosts = async () => {
             postElement.innerHTML = `
                 <h3>${post.username}</h3>
                 <p>${post.text}</p>
-                ${post.image ? `<img src="/uploads/${post.image}" alt="Post image">` : ""}
                 <small>${new Date(post.createdAt).toLocaleString()}</small>
             `;
             postsContainer.appendChild(postElement);
@@ -169,9 +170,17 @@ searchButton.addEventListener("click", async () => {
                 });
             });
         } else {
-            postsList.innerHTML = response.data.map(post =>
-                `<div class="text">${post.text} by ${post.username}</div>`
-            ).join("");
+            postsContainer.innerHTML = "";
+            response.data.forEach(post => {
+                const postElement = document.createElement("div");
+                postElement.classList.add("post");
+                postElement.innerHTML = `
+                    <h3>${post.username}</h3>
+                    <p>${post.text}</p>
+                    <small>${new Date(post.createdAt).toLocaleString()}</small>
+                `;
+                postsContainer.appendChild(postElement);
+            });
         }
     } catch (err) {
         console.error("Error fetching search results:", err.message);
@@ -200,7 +209,6 @@ async function checkIfFollowed(username) {
         return false; // Assume user is not followed in case of error
     }
 }
-
 
 // Function to handle following a user
 async function handleFollow(usernameToFollow, button) {
